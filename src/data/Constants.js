@@ -163,7 +163,7 @@ export const projects = [
     description:
       "Revolutionize your travel experience with our cutting-edge web application. Discover, plan, and book your dream destinations seamlessly, all in one user-friendly platform.",
     image:
-      "https://github.com/dineshkarthi01/client/blob/main/IMG_20230923_120812.jpg?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/Screenshot%20(1).png?raw=true",
     tags: ["React Js", "Redux"],
     category: "web app",
     github: "https://github.com/dineshkarthi01/Travelling",
@@ -176,7 +176,7 @@ export const projects = [
     description:
       "airTravels: Your passport to seamless journeys. Explore flights, hotels, and experiences with ease in our intuitive web application.",
     image:
-      "https://github.com/dineshkarthi01/client/blob/main/Screenshot%20(3).png?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/s3.png?raw=true",
     tags: [
       "React Js",
       "Redux",
@@ -192,7 +192,7 @@ export const projects = [
     description:
       "All deleted messages recovery(Restore message app) allows you to recover your chat messages fast and easy and recover all deleted messages by scanning your device notifications.",
     image:
-      "https://github.com/dineshkarthi01/AirTravels/blob/main/s1.png?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/s1.png?raw=true",
     tags: [
       "Figma",
     ],
@@ -207,7 +207,7 @@ export const projects = [
     description:
       "Consult is a voice-driven tool for researchers to conduct in-person or remote interviews, surveys, focus groups, and customer observation.",
     image:
-      "https://github.com/dineshkarthi01/AirTravels/blob/main/s2.png?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/s2.png?raw=true",
     tags: [
       "Figma",
     ],
@@ -221,7 +221,7 @@ export const projects = [
     description:
       "A mobile travel app is a software application that has been developed specifically for use on smaller devices, such as smartphones and tablets, and can be used by business travellers to book and manage their travel whilst on the move.",
     image:
-      "https://github.com/dineshkarthi01/AirTravels/blob/main/s3.png?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/s3.png?raw=true",
     tags: [
       "Figma",
     ],
@@ -235,7 +235,7 @@ export const projects = [
     description:
       " Breathe is your ultimate tool for mindfulness and relaxation, offering a diverse range of breathing exercises tailored to your needs.",
     image:
-      "https://github.com/dineshkarthi01/AirTravels/blob/main/s4.png?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/s4.png?raw=true",
     tags: [
       "Figma",
     ],
@@ -249,7 +249,7 @@ export const projects = [
     description:
       " A coffee shop app is used by coffee shops as a way to collect orders from customers.",
     image:
-      "https://github.com/dineshkarthi01/AirTravels/blob/main/s5.png?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/s5.png?raw=true",
     tags: [
       "Figma",
     ],
@@ -263,7 +263,7 @@ export const projects = [
     description:
       " Fashion Design Sketches is a sketchpad for all fashion designers from professional artists to amateurs who want to bring their creative ideas into reality.",
     image:
-      "https://github.com/dineshkarthi01/AirTravels/blob/main/s6.png?raw=true",
+      "https://github.com/Dineshkarthi11/portfolio/blob/main/src/data/s6.png?raw=true",
     tags: [
       "Figma",
     ],
