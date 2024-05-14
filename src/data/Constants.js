@@ -8,9 +8,9 @@ export const Bio = {
   ],
   description:
     "I am a motivated and versatile individual, always eager to take on new challenges. With a passion for learning I am dedicated to delivering high-quality results. With a positive attitude and a growth mindset, I am ready to make a meaningful contribution and achieve great things.",
-  github: "https://github.com/dineshkarthi01",
+  github: "https://github.com/Dineshkarthi11",
   resume:
-    "https://drive.google.com/file/d/1nnQVSc817JpWfl6dES2zQkAZjJvzZlk_/view?usp=sharing",
+    "https://drive.google.com/file/d/13h0v9jplrwq_V6z7AT3KsB5wwJWYZa61/view?usp=sharing",
   linkedin: "https://www.linkedin.com/in/dinesh-karthi-9224ba205/",
   insta: "https://www.instagram.com/salim_dinesh/",
   facebook: "https://www.facebook.com/dinesh.karthi.3194",
