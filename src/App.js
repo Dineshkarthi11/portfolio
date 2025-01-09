@@ -56,3 +56,85 @@ function App() {
 }
 
 export default App;
+
+
+
+
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+
+// Redux Slice for Tasks
+const fetchFakeTasks = createAsyncThunk("tasks/fetchFakeTasks", async () => {
+  const response = await axios.get("https://jsonplaceholder.typicode.com/todos");
+  return response.data.slice(0, 10); // Fetch first 10 tasks
+});
+
+const tasksSlice = createSlice({
+  name: "tasks",
+  initialState: { tasks: [], loading: false, error: null },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchFakeTasks.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchFakeTasks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tasks = action.payload;
+      })
+      .addCase(fetchFakeTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  },
+});
+
+export const taskReducer = tasksSlice.reducer;
+
+// TaskTable Component
+const TaskTable = () => {
+  const dispatch = useDispatch();
+  const { tasks, loading, error } = useSelector((state) => state.tasks);
+
+  useEffect(() => {
+    dispatch(fetchFakeTasks()); // Fetch tasks when component mounts
+  }, [dispatch]);
+
+  return (
+    <div className="container mt-4">
+      {/* Sub-header */}
+      <h2 className="text-center text-primary mb-3">Task List</h2>
+
+      {/* Table */}
+      {loading ? (
+        <div className="text-center">Loading...</div>
+      ) : error ? (
+        <div className="text-danger text-center">Error: {error}</div>
+      ) : (
+        <table className="table table-striped table-bordered shadow-sm">
+          <thead className="bg-primary text-white">
+            <tr>
+              <th>Task ID</th>
+              <th>Task Name</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task) => (
+              <tr key={task.id}>
+                <td>{task.id}</td>
+                <td>{task.title}</td>
+                <td>{task.completed ? "Attended" : "Not Attended"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+};
+
+export default TaskTable;
