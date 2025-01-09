@@ -54,19 +54,23 @@ function LeadTablesSection() {
 
   return (
     <div className="container my-4">
-      <Tabs
-        activeKey={key}
-        onSelect={(k) => setKey(k)}
-        className="mb-3"
-        transition={false}
-      >
-        <Tab eventKey="TodayCalls" title="Today Calls (3)">
-          <LeadTable data={todayCallsData} />
-        </Tab>
-        <Tab eventKey="OverdueCalls" title="Overdue Calls (3)">
-          <LeadTable data={overdueCallsData} />
-        </Tab>
-      </Tabs>
+      <div className="card shadow-sm">
+        <div className="card-body">
+          <Tabs
+            activeKey={key}
+            onSelect={(k) => setKey(k)}
+            className="mb-3"
+            transition={false}
+          >
+            <Tab eventKey="TodayCalls" title="Today Calls (3)">
+              <LeadTable data={todayCallsData} />
+            </Tab>
+            <Tab eventKey="OverdueCalls" title="Overdue Calls (3)">
+              <LeadTable data={overdueCallsData} />
+            </Tab>
+          </Tabs>
+        </div>
+      </div>
     </div>
   );
 }
