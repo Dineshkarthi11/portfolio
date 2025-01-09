@@ -4,16 +4,16 @@ import { Chart } from "react-google-charts";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import { Badge } from "react-bootstrap";
-import { IoFilterSharp } from "react-icons/io5";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoCallOutline } from "react-icons/io5";
+import { BsThreeDotsVertical, BsGraphUp, BsPeople } from "react-icons/bs";
 
 export const data = [
   ["Task", "Hours per Day"],
-  ["New Lead", 11],
-  ["Qualify", 2],
-  ["Bad Contact Info", 2],
-  ["Converted", 2],
-  ["Existing Account", 7],
+  ["New Lead", 15],
+  ["Qualify", 3],
+  ["Bad Contact Info", 4],
+  ["Converted", 8],
+  ["Existing Account", 10],
 ];
 
 export const options = {
@@ -40,7 +40,7 @@ export function ArcChart() {
 
 function Widget({ title, value, percentage, icon, decrease }) {
   return (
-    <div className="card shadow-sm mb-3">
+    <div className="card shadow-sm h-100">
       <div className="card-body text-center">
         <div className="d-flex justify-content-center align-items-center mb-2">
           <span className={`icon text-${decrease ? "danger" : "success"} me-2`}>
@@ -61,7 +61,7 @@ function Widget({ title, value, percentage, icon, decrease }) {
   );
 }
 
-function LeadTable() {
+function LeadTable({ data }) {
   return (
     <Table striped bordered hover responsive className="text-center">
       <thead>
@@ -73,30 +73,16 @@ function LeadTable() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Mark Otto</td>
-          <td>Converted</td>
-          <td>Sales Honey</td>
-          <td>
-            <Badge bg="success">Active</Badge>
-          </td>
-        </tr>
-        <tr>
-          <td>Jacob Thornton</td>
-          <td>New Lead</td>
-          <td>Sales Honey</td>
-          <td>
-            <Badge bg="warning">Pending</Badge>
-          </td>
-        </tr>
-        <tr>
-          <td>Larry Bird</td>
-          <td>Qualify</td>
-          <td>Web</td>
-          <td>
-            <Badge bg="danger">Lost</Badge>
-          </td>
-        </tr>
+        {data.map((lead, index) => (
+          <tr key={index}>
+            <td>{lead.name}</td>
+            <td>{lead.stage}</td>
+            <td>{lead.source}</td>
+            <td>
+              <Badge bg={lead.statusColor}>{lead.status}</Badge>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   );
@@ -109,7 +95,6 @@ function TabsSection({ title, tabs }) {
       <div className="card-header d-flex justify-content-between align-items-center">
         <h5>{title}</h5>
         <div>
-          <IoFilterSharp className="me-3" />
           <BsThreeDotsVertical />
         </div>
       </div>
@@ -132,15 +117,27 @@ function TabsSection({ title, tabs }) {
 }
 
 function WidgetGroup() {
+  const todayCallsData = [
+    { name: "Mark Otto", stage: "Converted", source: "Sales Honey", status: "Active", statusColor: "success" },
+    { name: "Jacob Thornton", stage: "New Lead", source: "Sales Honey", status: "Pending", statusColor: "warning" },
+    { name: "Larry Bird", stage: "Qualify", source: "Web", status: "Lost", statusColor: "danger" },
+  ];
+
+  const overdueCallsData = [
+    { name: "Steve Rogers", stage: "New Lead", source: "LinkedIn", status: "Pending", statusColor: "warning" },
+    { name: "Tony Stark", stage: "Converted", source: "Referral", status: "Active", statusColor: "success" },
+    { name: "Natasha Romanoff", stage: "Bad Contact Info", source: "Web", status: "Lost", statusColor: "danger" },
+  ];
+
   return (
     <div className="container my-4">
-      <div className="row g-3">
+      <div className="row g-4">
         <div className="col-md-4">
           <Widget
-            title="Total Lead"
+            title="Total Leads"
             value="1,02,890"
             percentage="+40%"
-            icon={<IoFilterSharp />}
+            icon={<BsGraphUp />}
           />
         </div>
         <div className="col-md-4">
@@ -148,7 +145,7 @@ function WidgetGroup() {
             title="Active Leads"
             value="56,562"
             percentage="+20%"
-            icon={<IoFilterSharp />}
+            icon={<BsPeople />}
           />
         </div>
         <div className="col-md-4">
@@ -157,7 +154,7 @@ function WidgetGroup() {
             value="12,342"
             percentage="-5%"
             decrease
-            icon={<IoFilterSharp />}
+            icon={<IoCallOutline />}
           />
         </div>
       </div>
@@ -165,18 +162,20 @@ function WidgetGroup() {
         title="Calls"
         tabs={[
           {
-            key: "Today Calls",
-            title: "Today Calls (5)",
-            content: <LeadTable />,
+            key: "TodayCalls",
+            title: "Today Calls (3)",
+            content: <LeadTable data={todayCallsData} />,
           },
           {
-            key: "Overdue Calls",
+            key: "OverdueCalls",
             title: "Overdue Calls (3)",
-            content: <LeadTable />,
+            content: <LeadTable data={overdueCallsData} />,
           },
         ]}
       />
-      <ArcChart />
+      <div className="mt-4">
+        <ArcChart />
+      </div>
     </div>
   );
 }
