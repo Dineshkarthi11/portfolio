@@ -3,17 +3,19 @@ import Table from "react-bootstrap/Table";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import { Badge } from "react-bootstrap";
+import { FaPhoneAlt } from "react-icons/fa";
 
 function LeadTable({ data }) {
   return (
     <div className="table-responsive">
       <Table striped hover bordered className="text-center">
-        <thead className="table-dark">
+        <thead className="bg-primary text-white">
           <tr>
             <th>Lead Name</th>
             <th>Lead Stage</th>
             <th>Lead Source</th>
             <th>Status</th>
+            <th>Last Contact</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -26,8 +28,11 @@ function LeadTable({ data }) {
               <td>
                 <Badge bg={lead.statusColor}>{lead.status}</Badge>
               </td>
+              <td>{lead.lastContact}</td>
               <td>
-                <button className="btn btn-sm btn-primary">View</button>
+                <button className="btn btn-sm btn-info">
+                  <FaPhoneAlt /> Call
+                </button>
               </td>
             </tr>
           ))}
@@ -39,15 +44,34 @@ function LeadTable({ data }) {
 
 function LeadTablesSection() {
   const todayCallsData = [
-    { name: "Mark Otto", stage: "Converted", source: "Sales Honey", status: "Active", statusColor: "success" },
-    { name: "Jacob Thornton", stage: "New Lead", source: "Web", status: "Pending", statusColor: "warning" },
-    { name: "Larry Bird", stage: "Qualify", source: "LinkedIn", status: "Lost", statusColor: "danger" },
+    { name: "Mark Otto", stage: "Converted", source: "Sales Honey", status: "Active", statusColor: "success", lastContact: "2025-01-09" },
+    { name: "Jacob Thornton", stage: "New Lead", source: "Web", status: "Pending", statusColor: "warning", lastContact: "2025-01-08" },
+    { name: "Larry Bird", stage: "Qualify", source: "LinkedIn", status: "Lost", statusColor: "danger", lastContact: "2025-01-07" },
+    { name: "Steve Rogers", stage: "Converted", source: "Referral", status: "Active", statusColor: "success", lastContact: "2025-01-06" },
+    { name: "Tony Stark", stage: "Bad Contact Info", source: "Email", status: "Lost", statusColor: "danger", lastContact: "2025-01-05" },
+    { name: "Natasha Romanoff", stage: "New Lead", source: "Web", status: "Pending", statusColor: "warning", lastContact: "2025-01-04" },
+    { name: "Bruce Banner", stage: "Qualify", source: "Sales Honey", status: "Active", statusColor: "success", lastContact: "2025-01-03" },
+    { name: "Clint Barton", stage: "Converted", source: "Referral", status: "Active", statusColor: "success", lastContact: "2025-01-02" },
+    { name: "Wanda Maximoff", stage: "New Lead", source: "Sales Honey", status: "Pending", statusColor: "warning", lastContact: "2025-01-01" },
+    { name: "Vision", stage: "Bad Contact Info", source: "Email", status: "Lost", statusColor: "danger", lastContact: "2024-12-31" },
+    { name: "Peter Parker", stage: "Qualify", source: "Web", status: "Active", statusColor: "success", lastContact: "2024-12-30" },
+    { name: "Doctor Strange", stage: "Converted", source: "LinkedIn", status: "Active", statusColor: "success", lastContact: "2024-12-29" },
+    { name: "Black Panther", stage: "New Lead", source: "Sales Honey", status: "Pending", statusColor: "warning", lastContact: "2024-12-28" },
   ];
 
   const overdueCallsData = [
-    { name: "Steve Rogers", stage: "New Lead", source: "Web", status: "Pending", statusColor: "warning" },
-    { name: "Tony Stark", stage: "Converted", source: "Referral", status: "Active", statusColor: "success" },
-    { name: "Natasha Romanoff", stage: "Bad Contact Info", source: "Email", status: "Lost", statusColor: "danger" },
+    { name: "Sam Wilson", stage: "Converted", source: "Referral", status: "Active", statusColor: "success", lastContact: "2024-11-15" },
+    { name: "Bucky Barnes", stage: "New Lead", source: "Email", status: "Pending", statusColor: "warning", lastContact: "2024-11-14" },
+    { name: "Nick Fury", stage: "Bad Contact Info", source: "Web", status: "Lost", statusColor: "danger", lastContact: "2024-11-13" },
+    { name: "Maria Hill", stage: "Converted", source: "LinkedIn", status: "Active", statusColor: "success", lastContact: "2024-11-12" },
+    { name: "Pepper Potts", stage: "Qualify", source: "Referral", status: "Active", statusColor: "success", lastContact: "2024-11-11" },
+    { name: "Shuri", stage: "New Lead", source: "Web", status: "Pending", statusColor: "warning", lastContact: "2024-11-10" },
+    { name: "Korg", stage: "Bad Contact Info", source: "Email", status: "Lost", statusColor: "danger", lastContact: "2024-11-09" },
+    { name: "Mantis", stage: "Converted", source: "Sales Honey", status: "Active", statusColor: "success", lastContact: "2024-11-08" },
+    { name: "Drax", stage: "New Lead", source: "Web", status: "Pending", statusColor: "warning", lastContact: "2024-11-07" },
+    { name: "Gamora", stage: "Bad Contact Info", source: "Email", status: "Lost", statusColor: "danger", lastContact: "2024-11-06" },
+    { name: "Star-Lord", stage: "Converted", source: "Referral", status: "Active", statusColor: "success", lastContact: "2024-11-05" },
+    { name: "Rocket Raccoon", stage: "Qualify", source: "Sales Honey", status: "Active", statusColor: "success", lastContact: "2024-11-04" },
   ];
 
   const [key, setKey] = useState("TodayCalls");
@@ -62,10 +86,10 @@ function LeadTablesSection() {
             className="mb-3"
             transition={false}
           >
-            <Tab eventKey="TodayCalls" title="Today Calls (3)">
+            <Tab eventKey="TodayCalls" title="Today Calls (12)">
               <LeadTable data={todayCallsData} />
             </Tab>
-            <Tab eventKey="OverdueCalls" title="Overdue Calls (3)">
+            <Tab eventKey="OverdueCalls" title="Overdue Calls (12)">
               <LeadTable data={overdueCallsData} />
             </Tab>
           </Tabs>
