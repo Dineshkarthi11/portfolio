@@ -1,576 +1,11 @@
-import { ThemeProvider } from "styled-components";
-import { useState, useEffect } from "react";
-import { darkTheme, lightTheme } from './utils/Themes.js'
-import Navbar from "./components/Navbar";
-import './App.css';
-import { BrowserRouter as Router } from 'react-router-dom';
-import HeroSection from "./components/HeroSection";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import Experience from "./components/Experience";
-import Education from "./components/Education";
-import ProjectDetails from "./components/ProjectDetails";
-import styled from "styled-components";
-
-const Body = styled.div`
-  background-color: ${({ theme }) => theme.bg};
-  width: 100%;
-  overflow-x: hidden;
-`
-
-const Wrapper = styled.div`
-  background: linear-gradient(38.73deg, rgba(204, 0, 187, 0.15) 0%, rgba(201, 32, 184, 0) 50%), linear-gradient(141.27deg, rgba(0, 70, 209, 0) 50%, rgba(0, 70, 209, 0.15) 100%);
-  width: 100%;
-  clip-path: polygon(0 0, 100% 0, 100% 100%,30% 98%, 0 100%);
-`
-function App() {
-  const [darkMode, setDarkMode] = useState(true);
-  const [openModal, setOpenModal] = useState({ state: false, project: null });
-  console.log(openModal)
-  return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-      <Router >
-        <Navbar />
-        <Body>
-          <HeroSection />
-          <Wrapper>
-            <Skills />
-            <Experience />
-          </Wrapper>
-          <Projects openModal={openModal} setOpenModal={setOpenModal} />
-          <Wrapper>
-            <Education />
-            <Contact />
-          </Wrapper>
-          <Footer />
-          {openModal.state &&
-            <ProjectDetails openModal={openModal} setOpenModal={setOpenModal} />
-          }
-        </Body>
-      </Router>
-    </ThemeProvider>
-  );
-}
-
-export default App;
-
-
-// *******~ Import ~******** //
-//? React
-import React, { useState, useContext } from "react";
-//? Assets
+import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
 import { Chart } from "react-google-charts";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { Dropdown, DropdownButton, Form } from "react-bootstrap";
-import { ResizableBox as ReactResizableBox } from "react-resizable";
-
-import "react-resizable/css/styles.css";
-//? Components
-import { ContextWidthProvider } from "@/context/widthContext/widthContext";
-//? CSS
-
-//? Images
-
-//? JSON File
-
-//? Icons
+import Tab from "react-bootstrap/Tab";
+import { Badge } from "react-bootstrap";
 import { IoFilterSharp } from "react-icons/io5";
-import { FaUsers } from "react-icons/fa";
-import { SlWallet } from "react-icons/sl";
-import { CiWavePulse1 } from "react-icons/ci";
-import { PiBriefcase } from "react-icons/pi";
-import { FaUserFriends } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { BsPlus } from "react-icons/bs";
-import { FiPhoneCall } from "react-icons/fi";
-// *******~ Import ~******** //
-
-function ResizableBox({ width = 100, height = 300, resizable = true }) {
-  // Define min and max width constraints
-  // const {
-  //   ScreenWidth,
-  //   BreakpointXs,
-  //   BreakpointSm,
-  //   BreakpointMd,
-  //   Breakpointlg,
-  //   BreakpointXl,
-  //   BreakpointXxl,
-  // } = useContext(ContextWidthProvider);
-  const minWidth = 300;
-  const maxWidth = 1200;
-
-  // Define min and max height constraints if needed
-  const minHeight = 135;
-  const maxHeight = 500;
-
-  return (
-    <>
-      {resizable ? (
-        <ReactResizableBox
-          width={width}
-          height={height}
-          minConstraints={[minWidth, minHeight]} // Set minimum width and height
-          maxConstraints={[maxWidth, maxHeight]} // Set maximum width and height
-          className="custom-widget color-1 widget-medium"
-        >
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <p>Resize</p>
-          </div>
-        </ReactResizableBox>
-      ) : (
-        <div
-          style={{
-            width: `${width}px`,
-            height: `${height}px`,
-          }}
-        >
-          <p>Resize</p>
-        </div>
-      )}
-    </>
-  );
-}
-
-const ArcWidget = ({
-  ColorType,
-  Icon,
-  Title,
-  Value,
-  Percentage,
-  Decrease,
-  Duration,
-  WidgetSize,
-}) => {
-  return (
-    <>
-      <div
-        className={`custom-widget color-${ColorType} ${
-          WidgetSize === "medium"
-            ? "widget-medium"
-            : WidgetSize === "large"
-              ? "widget-large"
-              : ""
-        }`}
-      >
-        <i>{Icon}</i>
-        <div className="widget-content">
-          <div className="title">
-            <p>{Title}</p>
-            <h4>{Value}</h4>
-          </div>
-          <div className="total">
-            <span className={`value ${Decrease ? "decrease" : ""}`}>
-              {Percentage}
-            </span>
-            <span className="duration">this {Duration}</span>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const WidgetGroup = () => {
-  return (
-    <>
-      <div className="custom-widget-group">
-        {/* <ResizableBox /> */}
-        <ArcWidget
-          ColorType="1"
-          Icon={
-            <>
-              <FaUsers />
-            </>
-          }
-          Title="Total Lead"
-          Value="1,02,890"
-          Percentage="+40%"
-          Decrease={false}
-          Duration="month"
-        />
-        <ArcWidget
-          ColorType="2"
-          Icon={
-            <>
-              {/* <SlWallet /> */}
-              <FaUsers />
-            </>
-          }
-          Title="Active Leads"
-          Value="56,562"
-          Percentage="+40%"
-          Decrease={false}
-          Duration="month"
-        />
-        <ArcWidget
-          ColorType="3"
-          Icon={
-            <>
-              <FaUsers />
-            </>
-          }
-          Title="Untouched Leads"
-          Value="56,562"
-          Percentage="-12%"
-          Decrease={true}
-          Duration="month"
-        />
-        <ArcWidget
-          ColorType="4"
-          Icon={
-            <>
-              <FiPhoneCall />
-            </>
-          }
-          Title="Today Calls"
-          Value="56,562"
-          Percentage="+40%"
-          Decrease={false}
-          Duration="month"
-        />
-        <ArcWidget
-          ColorType="2"
-          Icon={
-            <>
-              <FiPhoneCall />
-            </>
-          }
-          Title="Overdue Calls"
-          Value="56,562"
-          Percentage="+40%"
-          Decrease={false}
-          Duration="month"
-        />
-        <ArcWidget
-          ColorType="1"
-          Icon={
-            <>
-              <FaUsers />
-            </>
-          }
-          Title="Today Meetings"
-          Value="562"
-          Percentage="-12%"
-          Decrease={true}
-          Duration="month"
-        />
-        <ArcWidget
-          ColorType="2"
-          Icon={
-            <>
-              <FaUsers />
-            </>
-          }
-          Title="Overdue Meetings"
-          Value="562"
-          Percentage="-12%"
-          Decrease={true}
-          Duration="month"
-        />
-        <ArcWidget
-          ColorType="3"
-          Icon={
-            <>
-              <SlWallet />
-            </>
-          }
-          Title="By Revenue"
-          Value="$56,562"
-          Percentage="-12%"
-          Decrease={true}
-          Duration="month"
-        />
-        <Leads />
-        <CallsTab />
-        <MeetingTab />
-        <Opportunity />
-      </div>
-    </>
-  );
-};
-
-export default WidgetGroup;
-
-const CallsTab = () => {
-  const [key, setKey] = useState("Today Calls");
-  return (
-    <>
-      <div className="arc-tab-content inside-widget">
-        <div className="tab-title-div">
-          <h3>Calls</h3>
-          <span className="filter">
-            <IoFilterSharp />
-          </span>
-          <span className="action">
-            <BsThreeDotsVertical />
-          </span>
-        </div>
-        <Tabs
-          activeKey={key}
-          onSelect={(k) => setKey(k)}
-          className="inside-widget-tab"
-          transition={false}
-        >
-          <Tab
-            eventKey="Today Calls"
-            title={
-              <>
-                Today Calls <span className="count">5</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-          <Tab
-            eventKey="Overdue Call"
-            title={
-              <>
-                Overdue Call <span className="count">3</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-        </Tabs>
-      </div>
-    </>
-  );
-};
-const Leads = () => {
-  const [key, setKey] = useState("Total Leads");
-  return (
-    <>
-      <div className="arc-tab-content inside-widget">
-        <div className="tab-title-div">
-          <h3>My Leads</h3>
-          <span className="filter">
-            <IoFilterSharp />
-          </span>
-          <span className="action">
-            <BsThreeDotsVertical />
-          </span>
-        </div>
-        <Tabs
-          activeKey={key}
-          onSelect={(k) => setKey(k)}
-          className="inside-widget-tab"
-          transition={false}
-        >
-          <Tab
-            eventKey="Total Leads"
-            title={
-              <>
-                Total Leads <span className="count">5</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-          <Tab
-            eventKey="Active Leads"
-            title={
-              <>
-                Active Leads <span className="count">3</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-          <Tab
-            eventKey="Untouched Leads"
-            title={
-              <>
-                Untouched Leads <span className="count">5</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-        </Tabs>
-      </div>
-    </>
-  );
-};
-const MeetingTab = () => {
-  const [key, setKey] = useState("Today Meetings");
-  return (
-    <>
-      <div className="arc-tab-content inside-widget">
-        <div className="tab-title-div">
-          <h3>Meetings</h3>
-          <span className="filter">
-            <IoFilterSharp />
-          </span>
-          <span className="action">
-            <BsThreeDotsVertical />
-          </span>
-        </div>
-        <Tabs
-          activeKey={key}
-          onSelect={(k) => setKey(k)}
-          className="inside-widget-tab"
-          transition={false}
-        >
-          <Tab
-            eventKey="Today Meetings"
-            title={
-              <>
-                Today Meetings <span className="count">5</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-          <Tab
-            eventKey="Overdue Meetings"
-            title={
-              <>
-                Overdue Meetings <span className="count">3</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-        </Tabs>
-      </div>
-    </>
-  );
-};
-const Opportunity = () => {
-  const [key, setKey] = useState("By Revenue");
-  return (
-    <>
-      <div className="arc-tab-content inside-widget">
-        <div className="tab-title-div">
-          <h3>Opportunity</h3>
-          <span className="filter">
-            <IoFilterSharp />
-          </span>
-          <span className="action">
-            <BsThreeDotsVertical />
-          </span>
-        </div>
-        <Tabs
-          activeKey={key}
-          onSelect={(k) => setKey(k)}
-          className="inside-widget-tab"
-          transition={false}
-        >
-          <Tab
-            eventKey="By Revenue"
-            title={
-              <>
-                By Revenue <span className="count">5</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-          <Tab
-            eventKey="Today Activity"
-            title={
-              <>
-                Today Activity <span className="count">3</span>
-              </>
-            }
-          >
-            <>
-              <div className="table-div">
-                <LeadTable />
-              </div>
-            </>
-          </Tab>
-        </Tabs>
-      </div>
-    </>
-  );
-};
-
-function LeadTable() {
-  return (
-    <Table bordered>
-      <thead>
-        <tr>
-          <th>Lead Name</th>
-          <th>Lead Stage</th>
-          <th>Lead Source</th>
-          <th>Lead Source</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Mark Otto</td>
-          <td>Converted</td>
-          <td>Sales Honey</td>
-          <td>Sales Honey</td>
-        </tr>
-        <tr>
-          <td>Jacob Thornton</td>
-          <td>New Lead</td>
-          <td>Sales Honey</td>
-          <td>Sales Honey</td>
-        </tr>
-        <tr>
-          <td>Larry Bird</td>
-          <td>Qualify</td>
-          <td>Web</td>
-          <td>Web</td>
-        </tr>
-        <tr>
-          <td>Mark Otto</td>
-          <td>Converted</td>
-          <td>Sales Honey</td>
-          <td>Sales Honey</td>
-        </tr>
-      </tbody>
-    </Table>
-  );
-}
 
 export const data = [
   ["Task", "Hours per Day"],
@@ -583,6 +18,11 @@ export const data = [
 
 export const options = {
   is3D: true,
+  backgroundColor: "#f8f9fa",
+  pieSliceText: "percentage",
+  legend: { position: "bottom" },
+  chartArea: { width: "80%", height: "80%" },
+  colors: ["#007bff", "#28a745", "#ffc107", "#dc3545", "#6c757d"],
 };
 
 export function ArcChart() {
@@ -592,8 +32,153 @@ export function ArcChart() {
       data={data}
       options={options}
       width={"100%"}
-      height={"250px"}
+      height={"300px"}
       className="arc-chart"
     />
   );
 }
+
+function Widget({ title, value, percentage, icon, decrease }) {
+  return (
+    <div className="card shadow-sm mb-3">
+      <div className="card-body text-center">
+        <div className="d-flex justify-content-center align-items-center mb-2">
+          <span className={`icon text-${decrease ? "danger" : "success"} me-2`}>
+            {icon}
+          </span>
+          <h5 className="mb-0">{title}</h5>
+        </div>
+        <h4 className="font-weight-bold mb-2">{value}</h4>
+        <p
+          className={`text-${
+            decrease ? "danger" : "success"
+          } font-weight-bold mb-0`}
+        >
+          {percentage} {decrease ? "↓" : "↑"}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function LeadTable() {
+  return (
+    <Table striped bordered hover responsive className="text-center">
+      <thead>
+        <tr>
+          <th>Lead Name</th>
+          <th>Lead Stage</th>
+          <th>Lead Source</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mark Otto</td>
+          <td>Converted</td>
+          <td>Sales Honey</td>
+          <td>
+            <Badge bg="success">Active</Badge>
+          </td>
+        </tr>
+        <tr>
+          <td>Jacob Thornton</td>
+          <td>New Lead</td>
+          <td>Sales Honey</td>
+          <td>
+            <Badge bg="warning">Pending</Badge>
+          </td>
+        </tr>
+        <tr>
+          <td>Larry Bird</td>
+          <td>Qualify</td>
+          <td>Web</td>
+          <td>
+            <Badge bg="danger">Lost</Badge>
+          </td>
+        </tr>
+      </tbody>
+    </Table>
+  );
+}
+
+function TabsSection({ title, tabs }) {
+  const [key, setKey] = useState(tabs[0]?.key || "");
+  return (
+    <div className="card shadow-sm mb-3">
+      <div className="card-header d-flex justify-content-between align-items-center">
+        <h5>{title}</h5>
+        <div>
+          <IoFilterSharp className="me-3" />
+          <BsThreeDotsVertical />
+        </div>
+      </div>
+      <div className="card-body">
+        <Tabs
+          activeKey={key}
+          onSelect={(k) => setKey(k)}
+          className="mb-3"
+          transition={false}
+        >
+          {tabs.map((tab) => (
+            <Tab key={tab.key} eventKey={tab.key} title={tab.title}>
+              {tab.content}
+            </Tab>
+          ))}
+        </Tabs>
+      </div>
+    </div>
+  );
+}
+
+function WidgetGroup() {
+  return (
+    <div className="container my-4">
+      <div className="row g-3">
+        <div className="col-md-4">
+          <Widget
+            title="Total Lead"
+            value="1,02,890"
+            percentage="+40%"
+            icon={<IoFilterSharp />}
+          />
+        </div>
+        <div className="col-md-4">
+          <Widget
+            title="Active Leads"
+            value="56,562"
+            percentage="+20%"
+            icon={<IoFilterSharp />}
+          />
+        </div>
+        <div className="col-md-4">
+          <Widget
+            title="Untouched Leads"
+            value="12,342"
+            percentage="-5%"
+            decrease
+            icon={<IoFilterSharp />}
+          />
+        </div>
+      </div>
+      <TabsSection
+        title="Calls"
+        tabs={[
+          {
+            key: "Today Calls",
+            title: "Today Calls (5)",
+            content: <LeadTable />,
+          },
+          {
+            key: "Overdue Calls",
+            title: "Overdue Calls (3)",
+            content: <LeadTable />,
+          },
+        ]}
+      />
+      <ArcChart />
+    </div>
+  );
+}
+
+export default WidgetGroup;
