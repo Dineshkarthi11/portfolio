@@ -178,522 +178,264 @@ export default Calendar;
 
 
 
-import * as React from "react";
-import styles from './Calendar.module.css';
+import React, { useState, useRef, useEffect } from 'react';
+import { Settings, ChevronLeft, ChevronRight, Users, Video, Coffee, Book, Briefcase, Zap, Mic, X, MapPin, Clock, Calendar, User } from 'lucide-react';
 
-const viewOptions = ['Day', 'Week', 'Month'];
+// Utility functions and constants
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-function Calendar() {
+const formatTime = (date) => {
+  return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+};
+
+const getEventColors = (type) => {
+  const colors = {
+    meeting: {
+      bg: 'bg-blue-50',
+      border: 'border-blue-200',
+      text: 'text-blue-700'
+    },
+    workshop: {
+      bg: 'bg-purple-50',
+      border: 'border-purple-200',
+      text: 'text-purple-700'
+    },
+    social: {
+      bg: 'bg-green-50',
+      border: 'border-green-200',
+      text: 'text-green-700'
+    },
+    presentation: {
+      bg: 'bg-orange-50',
+      border: 'border-orange-200',
+      text: 'text-orange-700'
+    }
+  };
+  return colors[type] || colors.meeting;
+};
+
+const getEventStyle = (event) => {
+  const startHour = event.start.getHours() + event.start.getMinutes() / 60;
+  const endHour = event.end.getHours() + event.end.getMinutes() / 60;
+  const duration = endHour - startHour;
+  
+  return {
+    top: `${(startHour - 9) * 60}px`,
+    height: `${duration * 60}px`
+  };
+};
+
+// Sample events data
+const sampleEvents = [
+  {
+    id: 1,
+    title: 'Team Standup',
+    description: 'Daily team sync to discuss progress and blockers',
+    type: 'meeting',
+    start: new Date(2025, 0, 17, 10, 0),
+    end: new Date(2025, 0, 17, 10, 30),
+    location: 'Conference Room A',
+    organizer: 'Sarah Johnson',
+    attendees: ['John Doe', 'Jane Smith', 'Mike Brown'],
+    icon: Video
+  },
+  {
+    id: 2,
+    title: 'Project Workshop',
+    description: 'Brainstorming session for new features',
+    type: 'workshop',
+    start: new Date(2025, 0, 17, 14, 0),
+    end: new Date(2025, 0, 17, 15, 30),
+    location: 'Workshop Room B',
+    organizer: 'Mike Brown',
+    attendees: ['Sarah Johnson', 'Alex Wilson', 'Lisa Chen'],
+    icon: Briefcase
+  }
+];
+
+const getEventsForDay = (date) => {
+  return sampleEvents.filter(event => 
+    event.start.getDate() === date.getDate() &&
+    event.start.getMonth() === date.getMonth() &&
+    event.start.getFullYear() === date.getFullYear()
+  );
+};
+
+// Event Popup Component
+const EventPopup = ({ event, onClose, position }) => {
+  // [Previous EventPopup implementation remains the same]
+  // ... [Keep existing EventPopup code]
+};
+
+const CalendarEventList = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
+  const [viewType, setViewType] = useState('day');
+
+  const handleEventClick = (event, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPopupPosition({
+      x: rect.left + rect.width + 10,
+      y: rect.top
+    });
+    setSelectedEvent(event);
+  };
+
+  const handleNextDay = () => {
+    setCurrentDate(prev => {
+      const next = new Date(prev);
+      next.setDate(prev.getDate() + 1);
+      return next;
+    });
+  };
+
+  const handlePrevDay = () => {
+    setCurrentDate(prev => {
+      const next = new Date(prev);
+      next.setDate(prev.getDate() - 1);
+      return next;
+    });
+  };
+
   return (
-    <div className={styles.calendarContainer}>
-      <div className={styles.monthSelector}>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/83bbc0323c375ba7c057fb4d049f423653f98d6d96420f13d0cdb3a41f6e47fd?placeholderIfAbsent=true&apiKey=740fe41628444c68b4015f1a2abbfb39"
-          className={styles.monthIcon}
-          alt=""
-        />
-        <div className={styles.monthWrapper}>
-          <div className={styles.monthText}>September</div>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/470b4bda536400d451b3310a035d500bc8b06e11f56376af9cfab55d828520f0?placeholderIfAbsent=true&apiKey=740fe41628444c68b4015f1a2abbfb39"
-            className={styles.monthIcon}
-            alt=""
-          />
+    <div className="w-full max-w-6xl mx-auto p-4 space-y-4">
+      {/* Main Header */}
+      <div className="flex items-center justify-between border-b pb-4">
+        <h2 className="text-2xl font-semibold text-gray-900">
+          {monthNames[currentDate.getMonth()]}
+        </h2>
+
+        <div className="flex items-center gap-3">
+          <div className="flex items-center bg-gray-100 rounded-lg p-1">
+            <button 
+              className={`px-3 py-1.5 rounded text-sm transition-colors ${
+                viewType === 'day' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'
+              }`}
+              onClick={() => setViewType('day')}
+            >
+              {currentDate.getDate()}
+            </button>
+            <span className="text-gray-400 px-1">|</span>
+            <button 
+              className={`px-3 py-1.5 rounded text-sm transition-colors ${
+                viewType === 'month' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'
+              }`}
+              onClick={() => setViewType('month')}
+            >
+              {monthNames[currentDate.getMonth()]}
+            </button>
+            <span className="text-gray-400 px-1">|</span>
+            <button 
+              className={`px-3 py-1.5 rounded text-sm transition-colors ${
+                viewType === 'year' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'
+              }`}
+              onClick={() => setViewType('year')}
+            >
+              {currentDate.getFullYear()}
+            </button>
+          </div>
+
+          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <Settings className="w-5 h-5 text-gray-600" />
+          </button>
         </div>
       </div>
-      <div className={styles.viewControls}>
-        <div className={styles.viewToggle} role="group" aria-label="Calendar view options">
-          {viewOptions.map((option, index) => (
-            <div
-              key={option}
-              className={index === 1 ? styles.activeViewOption : styles.viewOption}
-              role="button"
-              tabIndex={0}
-              aria-pressed={index === 1}
+
+      {/* Single Day Header */}
+      <div className="flex items-center justify-between py-2 border-b">
+        <button 
+          onClick={handlePrevDay}
+          className="p-1 hover:bg-gray-100 rounded"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">{dayNames[currentDate.getDay()].slice(0, 3)}</span>
+          <span className="text-gray-400">|</span>
+          <span className="text-sm">{currentDate.getDate()}</span>
+        </div>
+
+        <button 
+          onClick={handleNextDay}
+          className="p-1 hover:bg-gray-100 rounded"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Calendar Grid */}
+      <div className="relative min-h-[720px] bg-gray-50 rounded-lg">
+        {/* Time labels */}
+        <div className="absolute left-0 top-0 w-16 h-full border-r">
+          {Array.from({ length: 13 }).map((_, i) => (
+            <div 
+              key={i}
+              className="absolute text-xs text-gray-500"
+              style={{ top: `${i * 60}px` }}
             >
-              {option}
+              {(i + 9).toString().padStart(2, '0')}:00
             </div>
           ))}
         </div>
-        <button 
-          className={styles.toggleButton}
-          aria-label="Toggle calendar view"
-          tabIndex={0}
-        />
-      </div>
-    </div>
-  );
-}
 
-export default Calendar;
-
-.calendarContainer {
-  border-radius: 10px 10px 0 0;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  display: flex;
-  margin-top: 10px;
-  width: 100%;
-  max-width: 1204px;
-  align-items: start;
-  gap: 20px;
-  font-family: Inter, sans-serif;
-  color: rgba(0, 0, 0, 1);
-  font-weight: 600;
-  text-align: center;
-  letter-spacing: -0.08px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 20px 47px;
-}
-
-.monthSelector {
-  display: flex;
-  gap: 9px;
-  font-size: 16px;
-  line-height: 1;
-}
-
-.monthIcon {
-  aspect-ratio: 1;
-  object-fit: contain;
-  object-position: center;
-  width: 24px;
-}
-
-.monthWrapper {
-  display: flex;
-  gap: 2px;
-}
-
-.monthText {
-  flex-grow: 1;
-  margin: auto 0;
-}
-
-.viewControls {
-  display: flex;
-  gap: 40px 49px;
-  font-size: 14px;
-  line-height: 1;
-}
-
-.viewToggle {
-  border-radius: 5px;
-  background-color: rgba(221, 214, 255, 1);
-  display: flex;
-  align-items: center;
-  gap: 17px;
-  padding: 2px 24px;
-}
-
-.viewOption {
-  align-self: stretch;
-  margin: auto 0;
-}
-
-.activeViewOption {
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  align-self: stretch;
-  padding: 3px 15px 12px;
-}
-
-.toggleButton {
-  border-radius: 5px;
-  background-color: rgba(230, 234, 238, 1);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  display: flex;
-  width: 40px;
-  height: 25px;
-  margin: auto 0;
-}
-
-@media (max-width: 991px) {
-  .calendarContainer {
-    max-width: 100%;
-    padding: 0 20px;
-  }
-  
-  .monthSelector,
-  .monthWrapper,
-  .viewControls,
-  .viewToggle,
-  .activeViewOption {
-    white-space: initial;
-  }
-  
-  .viewToggle {
-    padding: 0 20px;
-  }
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-import React from 'react';
-import styles from './WeeklySchedule.module.css';
-
-export const DaySchedule = ({ day, date, time }) => {
-  return (
-    <>
-      <div className={styles.dayContainer}>
-        <div>{`${day} ${date}`}</div>
-        <div className={styles.timeDisplay}>{time}</div>
-      </div>
-      <div className={styles.lightDivider} />
-    </>
-  );
-};
-
-import React from 'react';
-import { DaySchedule } from './DaySchedule';
-import styles from './WeeklySchedule.module.css';
-
-const scheduleData = [
-  { day: 'Sunday', date: '8', time: '4:00:12' },
-  { day: 'Monday', date: '3', time: '4:00:12' },
-  { day: 'Tuesday', date: '8', time: '4:00:12' },
-  { day: 'Wednesday', date: '6', time: '4:00:12' },
-  { day: 'Thursday', date: '8', time: '4:00:12' },
-  { day: 'Friday', date: '12', time: '4:00:12' },
-  { day: 'Saturday', date: '16', time: '4:00:12' }
-];
-
-export const WeeklySchedule = () => {
-  return (
-    <div className={styles.scheduleContainer}>
-      <div className={styles.navigationSection}>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/83bbc0323c375ba7c057fb4d049f423653f98d6d96420f13d0cdb3a41f6e47fd?placeholderIfAbsent=true&apiKey=740fe41628444c68b4015f1a2abbfb39"
-          className={styles.navigationIcon}
-          alt="Previous week"
-        />
-        <div className={styles.divider} />
-        <DaySchedule day="Sunday" date="8" time="4:00:12" />
-      </div>
-      <div className={styles.daysSection}>
-        {scheduleData.slice(1).map((schedule, index) => (
-          <DaySchedule
-            key={index}
-            day={schedule.day}
-            date={schedule.date}
-            time={schedule.time}
-          />
-        ))}
-      </div>
-      <div className={styles.navigationSection}>
-        <div className={styles.divider} />
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/470b4bda536400d451b3310a035d500bc8b06e11f56376af9cfab55d828520f0?placeholderIfAbsent=true&apiKey=740fe41628444c68b4015f1a2abbfb39"
-          className={styles.navigationIcon}
-          alt="Next week"
-        />
-      </div>
-    </div>
-  );
-};
-
-.scheduleContainer {
-  border-radius: 5px;
-  background: #fff;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  display: flex;
-  margin-top: 11px;
-  width: 1208px;
-  max-width: 100%;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 2px 37px;
-}
-
-@media (max-width: 991px) {
-  .scheduleContainer {
-    padding: 0 20px;
-  }
-}
-
-.navigationSection {
-  display: flex;
-  align-items: center;
-  gap: 40px 47px;
-  color: #000;
-  text-align: center;
-  letter-spacing: -0.08px;
-  font: 600 16px/1 Inter, sans-serif;
-}
-
-.navigationIcon {
-  aspect-ratio: 1;
-  object-fit: contain;
-  object-position: center;
-  width: 24px;
-  align-self: stretch;
-  margin: auto 0;
-}
-
-.divider {
-  align-self: stretch;
-  width: 1px;
-  height: 75px;
-  border: 1px solid #000;
-}
-
-.dayContainer {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  margin: auto 0;
-}
-
-.timeDisplay {
-  align-self: center;
-  margin-top: 10px;
-}
-
-.daysSection {
-  display: flex;
-  gap: 24px;
-  color: #000;
-  text-align: center;
-  letter-spacing: -0.08px;
-  flex-wrap: wrap;
-  padding: 0 1px;
-  font: 600 16px/1 Inter, sans-serif;
-}
-
-.lightDivider {
-  width: 1px;
-  height: 76px;
-  border: 1px solid #dad0d0;
-}
-
-import React from 'react';
-import styles from './TimelineCard.module.css';
-
-export function TimelineCard({ title, time }) {
-  return (
-    <div className={styles.card}>
-      <div className={styles.projectBadge}>. Tudu project</div>
-      <div className={styles.statusIndicator} />
-      <div className={styles.title}>
-        {title}
-        <br /> Inner page
-      </div>
-      <div className={styles.timeLabel}>Total Time</div>
-      <div className={styles.timeValue}>{time}</div>
-    </div>
-  );
-}
-
-.card {
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  padding: 19px 18px;
-}
-
-.projectBadge {
-  border-radius: 5px;
-  background-color: rgba(217, 217, 217, 1);
-  align-self: stretch;
-  color: rgba(103, 0, 233, 1);
-  line-height: 1.8;
-  padding: 0 22px 9px;
-}
-
-.statusIndicator {
-  border-radius: 5px;
-  background-color: rgba(217, 217, 217, 1);
-  display: flex;
-  margin-top: 7px;
-  width: 26px;
-  height: 19px;
-}
-
-.title {
-  color: rgba(0, 0, 0, 1);
-  margin-top: 13px;
-  line-height: 18px;
-}
-
-.timeLabel {
-  color: rgba(178, 173, 173, 1);
-  margin-top: 66px;
-}
-
-.timeValue {
-  color: rgba(80, 65, 65, 1);
-}
-
-@media (max-width: 991px) {
-  .projectBadge {
-    padding: 0 20px;
-  }
-  
-  .timeLabel {
-    margin-top: 40px;
-  }
-}
-
-import React from 'react';
-import { TimelineCard } from './TimelineCard';
-import styles from './Timeline.module.css';
-
-export function Timeline() {
-  const timeSlots = ['08:00', '09:00', '10:00', '11:00', '12:00'];
-  const cardData = [
-    { title: 'Tudu - Dashboard', time: '2:05:33' },
-    { title: 'Tudu - Dashboard', time: '2:05:33' },
-    { title: 'Tudu - Dashboard', time: '2:05:33' },
-    { title: 'Tudu - Dashboard', time: '2:05:33' },
-    { title: 'Tudu - Dashboard', time: '2:05:33' },
-    { title: 'Tudu - Dashboard', time: '2:05:33' },
-    { title: 'Tudu - Dashboard', time: '2:05:33' }
-  ];
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.timeColumn}>
-        {timeSlots.map((time, index) => (
-          <div key={time} className={index > 0 ? styles.timeSlot : ''}>
-            {time}
-          </div>
-        ))}
-      </div>
-      <div className={styles.contentArea}>
-        <div className={styles.divider} />
-        <div className={styles.cardsContainer}>
-          {cardData.map((card, index) => (
-            <TimelineCard
-              key={index}
-              title={card.title}
-              time={card.time}
+        {/* Events container */}
+        <div className="ml-16 relative">
+          {/* Hour grid lines */}
+          {Array.from({ length: 13 }).map((_, i) => (
+            <div 
+              key={i}
+              className="absolute w-full border-t border-gray-200"
+              style={{ top: `${i * 60}px` }}
             />
           ))}
+
+          {/* Event Cards */}
+          <div className="relative px-4">
+            {getEventsForDay(currentDate).map(event => {
+              const colors = getEventColors(event.type);
+              const Icon = event.icon;
+              return (
+                <div
+                  key={event.id}
+                  className="absolute w-full left-0 px-4"
+                  style={getEventStyle(event)}
+                  onClick={(e) => handleEventClick(event, e)}
+                >
+                  <div className={`
+                    h-full rounded-lg p-2 border shadow-sm cursor-pointer
+                    ${colors.bg} ${colors.border} ${colors.text}
+                    transition-all hover:shadow-md
+                  `}>
+                    <div className="flex items-center gap-1 mb-1">
+                      <Icon className="w-4 h-4" />
+                      <h4 className="font-medium truncate text-sm">{event.title}</h4>
+                    </div>
+                    <p className="text-xs opacity-75">
+                      {formatTime(event.start)} - {formatTime(event.end)}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
+
+      {/* Event Popup */}
+      {selectedEvent && (
+        <EventPopup 
+          event={selectedEvent} 
+          onClose={() => setSelectedEvent(null)}
+          position={popupPosition}
+        />
+      )}
     </div>
   );
-}
+};
 
+export default CalendarEventList;
 
-.container {
-  display: flex;
-  margin-top: 11px;
-  width: 100%;
-  max-width: 1211px;
-  align-items: flex-start;
-  gap: 5px;
-  font-family: Inter, sans-serif;
-  font-weight: 600;
-  text-align: center;
-  letter-spacing: -0.08px;
-  flex-wrap: wrap;
-}
-
-.timeColumn {
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 15px;
-  color: rgba(0, 0, 0, 1);
-  white-space: nowrap;
-  line-height: 1.2;
-  padding: 59px 16px;
-}
-
-.timeSlot {
-  margin-top: 107px;
-}
-
-.contentArea {
-  align-self: end;
-  display: flex;
-  margin-top: 60px;
-  flex-direction: column;
-  font-size: 10px;
-  flex-grow: 1;
-  flex-basis: 0;
-  width: fit-content;
-}
-
-.divider {
-  height: 1px;
-  border: 1px solid rgba(211, 201, 201, 1);
-}
-
-.cardsContainer {
-  display: flex;
-  align-items: flex-start;
-  gap: 38px;
-  flex-wrap: wrap;
-  margin: 4px 0 0 26px;
-}
-
-@media (max-width: 991px) {
-  .container {
-    max-width: 100%;
-  }
-  
-  .timeColumn {
-    white-space: initial;
-  }
-  
-  .timeSlot {
-    margin-top: 40px;
-  }
-  
-  .contentArea {
-    max-width: 100%;
-    margin-top: 40px;
-  }
-  
-  .divider {
-    max-width: 100%;
-  }
-  
-  .cardsContainer {
-    margin-right: 7px;
-  }
-}
-
-
-This is the one page component codes 
-
-ive given seperately 
-
-please combine and give me the proper code without changes any designs and codes
-
-this is the calendar events lists 
-
-ive given all the code 
-
-give me the codes without changes the designs and codes ...dont give short codes
-
-give me the converting codes of component wise 
-
-combine and give me the converting all codes
 
