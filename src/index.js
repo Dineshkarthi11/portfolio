@@ -789,3 +789,314 @@ button:focus {
 export default CalendarEventsPage;
 
 
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background-color: #6182ca;
+  color: white;
+  gap: 5px;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
+}
+
+.nav-buttons button {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 0 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-buttons button:hover {
+  background: #357abd;
+}
+
+.view-buttons button {
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 16px;
+  margin: 0 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.view-buttons button.active {
+  background: #4a90e2;
+  color: white;
+}
+
+.view-buttons button:hover {
+  background: #ddd;
+}
+
+.dropdown {
+  position: absolute;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1000;
+  max-width: 100%;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: #e0e0e0;
+}
+
+.calendar-header-cell {
+  background: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.calendar-cell {
+  background: white;
+  min-height: 100px;
+  padding: 10px;
+  position: relative;
+}
+
+.calendar-cell.inactive {
+  color: #aaa;
+}
+
+.day-view-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.day-header {
+  background-color: #f4f4f4;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.day-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.hours-column {
+  width: 60px;
+  border-right: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+}
+
+.hour-label {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-size: 12px;
+  color: #666;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.events-column {
+  flex: 1;
+}
+
+.hour-cell {
+  height: 60px;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 5px;
+  position: relative;
+}
+
+.event {
+  margin: 2px 0;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event.all-day {
+  background-color: #e8e0ff;
+  color: #5a3ea4;
+}
+
+.event.long {
+  background-color: #e0f0ff;
+  color: #2d6bb7;
+}
+
+.event.timed {
+  background-color: #e0ffe5;
+  color: #287c3d;
+}
+
+.dropdown-column {
+  margin-top: 340px;
+  position: absolute;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+  background: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.event-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.event-popup .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.event-popup h3 {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.event-popup p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.calendar-container {
+  position: relative;
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .hours-column {
+    width: 50px;
+  }
+
+  .calendar-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .dropdown-item {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hours-column {
+    width: 40px;
+  }
+
+  .day-header {
+    font-size: 14px;
+  }
+
+  .event-popup {
+    width: 90%;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hours-column {
+    width: 30px;
+  }
+
+  .day-header {
+    font-size: 12px;
+  }
+
+  .calendar-header {
+    flex-direction: column;
+  }
+
+  .event {
+    font-size: 10px;
+  }
+
+  .dropdown-item {
+    font-size: 12px;
+  }
+}
