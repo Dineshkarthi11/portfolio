@@ -280,3 +280,99 @@ const handleContextMenu = (e, date) => {
   {showContextMenu && renderContextMenu()}
   {selectedEventDetails && renderEventPopup()}
 </div>
+
+
+
+
+
+/* Calendar Grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+}
+
+/* Calendar Header Cells */
+.calendar-header-cell {
+  background: #f5f5f5;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 2px solid #ccc;
+}
+
+/* Calendar Cells */
+.calendar-cell {
+  position: relative;
+  padding: 10px;
+  background: #fff;
+  min-height: 80px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.calendar-cell:hover {
+  background: #f0f8ff;
+}
+
+/* Current and Other Month Styles */
+.current-month {
+  font-weight: bold;
+}
+
+.other-month {
+  color: #bbb;
+}
+
+/* Date Label */
+.date-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Event Styles */
+.event {
+  background: #2196F3;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.event:hover {
+  transform: scale(1.05);
+}
+
+/* Different Event Types */
+.event.long {
+  background: #FF9800;
+}
+
+.event.short {
+  background: #4CAF50;
+}
+
+/* More Events Link */
+.more-events {
+  color: #FF5722;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 0;
+}
+
+.more-events:hover {
+  text-decoration: underline;
+}
+
