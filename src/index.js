@@ -9,78 +9,9 @@ root.render(
   </React.StrictMode>
 );
 
+i need when i click any date in month , week and day , i said when i right click or double tab i need to show new event name in tag in that date then if i click on that new event tag i need to show that new event image card i want, i given example of images
+
+  do you understand?
 
 
 
-
-{[...Array(12)].map((_, hour) => (
-  <React.Fragment key={hour}>
-    <div className="calendar-header-cell">{hour === 0 ? 12 : hour}:00 AM</div>
-    {[0, 1, 2, 3, 4, 5, 6].map(index => {
-      const date = cloneDate(startOfWeek);
-      date.setDate(startOfWeek.getDate() + index);
-      date.setHours(hour, 0, 0, 0);
-      
-      const hourEvents = eventsForWeek.filter(event => {
-        if (event.type === 'long') {
-          return date >= event.startDate && date <= event.endDate;
-        }
-        return event.date.getHours() === hour && 
-               event.date.toDateString() === date.toDateString();
-      });
-
-      return (
-        <div key={index} className="calendar-cell">
-          {hourEvents.map(event => (
-            <div 
-              key={event.id} 
-              className={`event ${event.type}`} 
-              onClick={() => setSelectedEventDetails(event)}
-            >
-              <span style={{ marginRight: '4px' }}>
-                {formatDate(event.date || event.startDate, { hour: '2-digit', minute: '2-digit', hour12: true })}
-              </span>
-              {event.title}
-            </div>
-          ))}
-        </div>
-      );
-    })}
-  </React.Fragment>
-))}
-
-{[...Array(12)].map((_, hour) => (
-  <React.Fragment key={hour + 12}>
-    <div className="calendar-header-cell">{hour === 0 ? 12 : hour}:00 PM</div>
-    {[0, 1, 2, 3, 4, 5, 6].map(index => {
-      const date = cloneDate(startOfWeek);
-      date.setDate(startOfWeek.getDate() + index);
-      date.setHours(hour + 12, 0, 0, 0);
-      
-      const hourEvents = eventsForWeek.filter(event => {
-        if (event.type === 'long') {
-          return date >= event.startDate && date <= event.endDate;
-        }
-        return event.date.getHours() === hour + 12 && 
-               event.date.toDateString() === date.toDateString();
-      });
-
-      return (
-        <div key={index} className="calendar-cell">
-          {hourEvents.map(event => (
-            <div 
-              key={event.id} 
-              className={`event ${event.type}`} 
-              onClick={() => setSelectedEventDetails(event)}
-            >
-              <span style={{ marginRight: '4px' }}>
-                {formatDate(event.date || event.startDate, { hour: '2-digit', minute: '2-digit', hour12: true })}
-              </span>
-              {event.title}
-            </div>
-          ))}
-        </div>
-      );
-    })}
-  </React.Fragment>
-))}
