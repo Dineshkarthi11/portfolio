@@ -9,77 +9,43 @@ root.render(
   </React.StrictMode>
 );
 
-const renderDayView = () => {
-  const eventsForDay = getEventsForDay(currentDate);
-  return (
-    <div className="day-view-container">
-      <div className="day-header">
-        {formatDate(currentDate, { weekday: 'short', day: 'numeric' })}
+
+const renderCalendarCell = (day, events) => {
+    const MAX_VISIBLE_EVENTS = 2;
+    const hiddenEvents = events.length > MAX_VISIBLE_EVENTS ? events.length - MAX_VISIBLE_EVENTS : 0;
+
+    return (
+      <div
+        className={`calendar-cell ${day.isCurrentMonth ? 'current-month' : 'other-month'}`}
+        onClick={() => setCurrentDate(day.date)}
+        onContextMenu={(e) => handleContextMenu(e, day.date)}
+        onDoubleClick={() => handleDayDoubleClick(day.date)}
+      >
+        <div className="date-label">{day.date.getDate()}</div>
+        {events.slice(0, MAX_VISIBLE_EVENTS).map(event => (
+          <div
+            key={event.id}
+            className={`event ${event.type}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedEventDetails(event);
+            }}
+          >
+            {event.title}
+          </div>
+        ))}
+        {hiddenEvents > 0 && (
+          <div 
+            className="more-events"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedDayEvents(events);
+              setShowEventList(true);
+            }}
+          >
+            +{hiddenEvents} more
+          </div>
+        )}
       </div>
-      <div className="day-content">
-        <div className="hours-column">
-          {[...Array(12)].map((_, hour) => (
-            <div key={hour} className="hour-label">
-              {hour === 0 ? 12 : hour}:00 AM
-            </div>
-          ))}
-          {[...Array(12)].map((_, hour) => (
-            <div key={hour + 12} className="hour-label">
-              {hour === 0 ? 12 : hour}:00 PM
-            </div>
-          ))}
-        </div>
-        <div className="events-column">
-          {[...Array(12)].map((_, hour) => (
-            <div key={hour} className="hour-cell">
-              {eventsForDay
-                .filter(event => {
-                  const eventHour = event.type === 'long' 
-                    ? event.startDate.getHours() 
-                    : event.date.getHours();
-                  return eventHour === hour;
-                })
-                .map(event => (
-                  <div 
-                    key={event.id} 
-                    className={`event ${event.type}`} 
-                    onClick={() => setSelectedEventDetails(event)}
-                  >
-                    <span style={{ marginRight: '4px' }}>
-                      {formatDate(event.date || event.startDate, { hour: '2-digit', minute: '2-digit', hour12: true })}
-                    </span>
-                    {event.title}
-                  </div>
-                ))
-              }
-            </div>
-          ))}
-          {[...Array(12)].map((_, hour) => (
-            <div key={hour + 12} className="hour-cell">
-              {eventsForDay
-                .filter(event => {
-                  const eventHour = event.type === 'long' 
-                    ? event.startDate.getHours() 
-                    : event.date.getHours();
-                  return eventHour === hour + 12;
-                })
-                .map(event => (
-                  <div 
-                    key={event.id} 
-                    className={`event ${event.type}`} 
-                    onClick={() => setSelectedEventDetails(event)}
-                  >
-                    <span style={{ marginRight: '4px' }}>
-                      {formatDate(event.date || event.startDate, { hour: '2-digit', minute: '2-digit', hour12: true })}
-                    </span>
-                    {event.title}
-                  </div>
-                ))
-              }
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+    );
+  };
