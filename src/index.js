@@ -10,9 +10,15 @@ root.render(
 );
 
 
-const renderCreateEventPopup = () => (
-  <div className="event-popup-overlay">
-    <div className="event-popup event-create-popup">
+      const renderCreateEventPopup = () => (
+  <div
+    className="event-popup-overlay"
+    onClick={() => setShowCreateEvent(false)} // Close the popup on backdrop click
+  >
+    <div
+      className="event-popup event-create-popup"
+      onClick={(e) => e.stopPropagation()} // Prevent backdrop click from propagating
+    >
       <div className="event-popup-header">
         <h2>Edit</h2>
         <button className="close-button" onClick={() => setShowCreateEvent(false)}>×</button>
@@ -123,3 +129,4 @@ const renderCreateEventPopup = () => (
     </div>
   </div>
 );
+      
