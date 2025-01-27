@@ -169,3 +169,14 @@ const renderSecondEventPopup = () => (
   {selectedEventDetails && renderEventPopup()}
 </div>
 
+
+
+const handleContextMenu = (e, date) => {
+  e.preventDefault();
+  setContextMenuPosition({ x: e.clientX, y: e.clientY });
+  setShowContextMenu(true);
+  setNewEvent(prev => ({
+    ...prev,
+    date: date
+  }));
+};
