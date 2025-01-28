@@ -132,3 +132,103 @@ const renderEventPopup = () => (
     </div>
   </div>
 );
+
+
+
+
+
+
+const renderWeekView = () => {
+    const startOfWeek = getStartOfWeek(currentDate);
+    const endOfWeek = cloneDate(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    const eventsForWeek = getEventsForWeek(startOfWeek);
+  
+    const formatWeekRange = (start, end) => {
+      const options = { month: 'short', day: 'numeric', year: 'numeric' };
+      return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString('en-US', options)}`;
+    };
+  
+    const renderHourCell = (date, hour) => {
+      const hourEvents = eventsForWeek.filter(event => {
+        const eventDate = event.date || event.startDate;
+        return eventDate.getHours() === hour && 
+               eventDate.toDateString() === date.toDateString();
+      });
+  
+      const MAX_VISIBLE_EVENTS = 1;
+      const hiddenEvents = hourEvents.length > MAX_VISIBLE_EVENTS ? hourEvents.length - MAX_VISIBLE_EVENTS : 0;
+  
+      return (
+        <div 
+          className="calendar-cell"
+          onContextMenu={(e) => handleContextMenu(e, date)}
+          onDoubleClick={() => handleDayDoubleClick(date)}
+        >
+          {hourEvents.slice(0, MAX_VISIBLE_EVENTS).map(event => (
+            <div 
+              key={event.id} 
+              className={`event ${event.type}`} 
+              onClick={() => setSelectedEventDetails(event)}
+            >
+              {event.title}
+            </div>
+          ))}
+          {hiddenEvents > 0 && (
+            <div 
+              className="more-events"
+              onClick={() => {
+                setSelectedDayEvents(hourEvents);
+                setShowEventList(true);
+              }}
+            >
+              +{hiddenEvents} more
+            </div>
+          )}
+        </div>
+      );
+    };
+  
+    return (
+      <div className="week-view-container">
+        <div className="week-header" style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between',
+          alignItems: 'center', 
+          marginBottom: '15px',
+          marginLeft: "35%"
+        }}>
+          <h2>{formatWeekRange(startOfWeek, endOfWeek)}</h2>
+        </div>
+        <div className="calendar-grid" style={{ gridTemplateColumns: 'repeat(8, 1fr)' }}>
+          <div className="calendar-header-cell">Time</div>
+          {[0, 1, 2, 3, 4, 5, 6].map(index => {
+            const date = cloneDate(startOfWeek);
+            date.setDate(startOfWeek.getDate() + index);
+            return (
+              <div key={index} className="calendar-header-cell">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index]} {date.getDate()}
+              </div>
+            );
+          })}
+          
+          {[...Array(24)].map((_, hour) => (
+            <React.Fragment key={hour}>
+              <div className="calendar-header-cell">
+                {hour === 0 ? '12:00 AM' : 
+                 hour < 12 ? `${hour}:00 AM` : 
+                 hour === 12 ? '12:00 PM' : 
+                 `${hour - 12}:00 PM`}
+              </div>
+              {[0, 1, 2, 3, 4, 5, 6].map(index => {
+                const date = cloneDate(startOfWeek);
+                date.setDate(startOfWeek.getDate() + index);
+                date.setHours(hour);
+                return renderHourCell(date, hour);
+              })}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    );
+  };
