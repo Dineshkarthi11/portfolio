@@ -232,3 +232,168 @@ const renderWeekView = () => {
       </div>
     );
   };
+
+
+
+
+
+
+const renderWeekView = () => {
+  const startOfWeek = getStartOfWeek(currentDate);
+  const endOfWeek = cloneDate(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+  const eventsForWeek = getEventsForWeek(startOfWeek);
+
+  const formatWeekRange = (start, end) => {
+    const options = { month: "short", day: "numeric", year: "numeric" };
+    return `${start.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    })} – ${end.toLocaleDateString("en-US", options)}`;
+  };
+
+  const renderHourCell = (date, hour) => {
+    const hourEvents = eventsForWeek.filter((event) => {
+      const eventDate = event.date || event.startDate;
+      return (
+        eventDate.getHours() === hour &&
+        eventDate.toDateString() === date.toDateString()
+      );
+    });
+
+    const MAX_VISIBLE_EVENTS = 1;
+    const hiddenEvents =
+      hourEvents.length > MAX_VISIBLE_EVENTS
+        ? hourEvents.length - MAX_VISIBLE_EVENTS
+        : 0;
+
+    return (
+      <div
+        className="calendar-cell"
+        onContextMenu={(e) => handleContextMenu(e, date)}
+        onDoubleClick={() => handleDayDoubleClick(date)}
+      >
+        {hourEvents.slice(0, MAX_VISIBLE_EVENTS).map((event) => (
+          <div
+            key={event.id}
+            className="event"
+            style={{
+              backgroundColor: event.color || "#000",
+              color: "#fff",
+              borderRadius: "5px",
+              padding: "5px",
+              cursor: "pointer",
+            }}
+            onClick={() => setSelectedEventDetails(event)}
+            onMouseEnter={() => {
+              setHoveredEvent(event);
+              setShowHoverCard(true);
+            }}
+            onMouseLeave={() => setShowHoverCard(false)}
+          >
+            {event.title}
+          </div>
+        ))}
+        {hiddenEvents > 0 && (
+          <div
+            className="more-events"
+            onClick={() => {
+              setSelectedDayEvents(hourEvents);
+              setShowEventList(true);
+            }}
+          >
+            +{hiddenEvents} more
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="week-view-container">
+      <div
+        className="week-header"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "15px",
+          marginLeft: "35%",
+        }}
+      >
+        <h2>{formatWeekRange(startOfWeek, endOfWeek)}</h2>
+      </div>
+      <div
+        className="calendar-grid"
+        style={{ gridTemplateColumns: "repeat(8, 1fr)" }}
+      >
+        <div className="calendar-header-cell">Time</div>
+        {[0, 1, 2, 3, 4, 5, 6].map((index) => {
+          const date = cloneDate(startOfWeek);
+          date.setDate(startOfWeek.getDate() + index);
+          return (
+            <div key={index} className="calendar-header-cell">
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][index]}{" "}
+              {date.getDate()}
+            </div>
+          );
+        })}
+
+        {[...Array(24)].map((_, hour) => (
+          <React.Fragment key={hour}>
+            <div className="calendar-header-cell">
+              {hour === 0
+                ? "12:00 AM"
+                : hour < 12
+                ? `${hour}:00 AM`
+                : hour === 12
+                ? "12:00 PM"
+                : `${hour - 12}:00 PM`}
+            </div>
+            {[0, 1, 2, 3, 4, 5, 6].map((index) => {
+              const date = cloneDate(startOfWeek);
+              date.setDate(startOfWeek.getDate() + index);
+              date.setHours(hour);
+              return renderHourCell(date, hour);
+            })}
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* Hover Card */}
+      {showHoverCard && hoveredEvent && (
+        <div
+          className="hover-card"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#fff",
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+            padding: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            zIndex: 1000,
+          }}
+        >
+          <h3>{hoveredEvent.title}</h3>
+          <p>{hoveredEvent.description}</p>
+          <button
+            onClick={() => handleEditEvent(hoveredEvent)}
+            className="edit-button"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDeleteEvent(hoveredEvent.id)}
+            className="delete-button"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
