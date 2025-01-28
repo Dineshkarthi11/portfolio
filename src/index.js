@@ -28,42 +28,43 @@ const renderEventPopup = () => (
       </div>
       <div className="event-popup-content">
         <div className="form-group">
-          <label>Event Name</label>
-          {isEditing ? (
-            <input 
-              type="text" 
-              value={editedEvent?.title || ''} 
-              onChange={(e) => setEditedEvent({ ...editedEvent, title: e.target.value })}
-              className="event-input"
-              placeholder="Enter event name"
-            />
-          ) : (
-            <input 
-              type="text" 
-              value={selectedEventDetails?.title || ''} 
-              className="event-input"
-              readOnly
-            />
-          )}
-        </div>
-        
-        <div className="form-group">
-          <label>Event Color</label>
-          {isEditing ? (
-            <input 
-              type="color" 
-              value={editedEvent?.color || '#000000'} 
-              onChange={(e) => setEditedEvent({ ...editedEvent, color: e.target.value })}
-              className="event-color-picker"
-            />
-          ) : (
-            <input 
-              type="color" 
-              value={selectedEventDetails?.color || '#000000'} 
-              className="event-color-picker"
-              readOnly
-            />
-          )}
+          <label>
+            Event Name
+            {isEditing ? (
+              <>
+                <input 
+                  type="text" 
+                  value={editedEvent?.title || ''} 
+                  onChange={(e) => setEditedEvent({ ...editedEvent, title: e.target.value })}
+                  className="event-input"
+                  placeholder="Enter event name"
+                />
+                <input 
+                  type="color" 
+                  value={editedEvent?.color || '#000000'} 
+                  onChange={(e) => setEditedEvent({ ...editedEvent, color: e.target.value })}
+                  className="event-color-picker"
+                  style={{ marginLeft: '10px' }}
+                />
+              </>
+            ) : (
+              <>
+                <input 
+                  type="text" 
+                  value={selectedEventDetails?.title || ''} 
+                  className="event-input"
+                  readOnly
+                />
+                <input 
+                  type="color" 
+                  value={selectedEventDetails?.color || '#000000'} 
+                  className="event-color-picker"
+                  style={{ marginLeft: '10px' }}
+                  readOnly
+                />
+              </>
+            )}
+          </label>
         </div>
 
         <div className="form-group">
@@ -124,4 +125,3 @@ const renderEventPopup = () => (
     </div>
   </div>
 );
-
