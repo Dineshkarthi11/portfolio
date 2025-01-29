@@ -11,97 +11,127 @@ root.render(
 
 
 
-<div className="calendar-body">
-  {view === 'month' && (
-    <div className="calendar-grid">
-      {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
-        <div key={index} className="calendar-header-cell">
-          {day}
-        </div>
-      ))}
-      {getDaysInMonth(currentDate).map((day, index) => {
-        const events = getEventsForDate(day.date);
-        const MAX_VISIBLE_EVENTS = 1;
-        const hiddenEventsCount = events.length > MAX_VISIBLE_EVENTS ? events.length - MAX_VISIBLE_EVENTS : 0;
-
-        return (
-          <div
-            key={index}
-            className={`calendar-cell ${day.isCurrentMonth ? 'current-month' : 'other-month'}`}
-            onClick={() => setCurrentDate(day.date)}
-            onContextMenu={(e) => handleContextMenu(e, day.date)}
-            onDoubleClick={() => handleDayDoubleClick(day.date)}
-          >
-            <div className="date-label">{day.date.getDate()}</div>
-            
-            {events.slice(0, MAX_VISIBLE_EVENTS).map(event => (
-              <div className="event-container" key={event.id}>
-                <div
-                  className={`event ${event.type}`}
-                  style={{
-                    backgroundColor: event.color || '#ffffff',
-                    color: getContrastColor(event.color),
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedEventDetails(event);
-                  }}
-                >
-                  {event.title}
-                </div>
-                <EventHoverCard 
-                  event={event}
-                  style={{
-                    backgroundColor: event.color || '#ffffff',
-                    color: getContrastColor(event.color),
-                  }}
-                  onEdit={() => {
-                    setEditedEvent(event);
-                    setIsEditing(true);
-                  }}
-                  onDelete={handleDeleteEvent}
-                />
-              </div>
-            ))}
-
-            {hiddenEventsCount > 0 && (
-              <div
-                className="more-events"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedDayEvents(events);
-                  setShowEventList(true);
-                }}
-              >
-                +{hiddenEventsCount} more
-              </div>
-            )}
+const renderEventPopup = () => (
+    selectedEventDetails && (
+      <div className="event-popup-overlay">
+        <div className="event-popup" ref={eventPopupRef}>
+          <div className="event-popup-header">
+            <h2>{isEditing ? 'Edit Event' : 'Event Details'}</h2>
+            <button
+              className="close-button"
+              onClick={() => {
+                setSelectedEventDetails(null);
+                setIsEditing(false);
+                setEditedEvent(null);
+              }}
+            >
+              ×
+            </button>
           </div>
-        );
-      })}
-    </div>
-  )}
-
-  {view === 'week' && renderWeekView()}
-  {view === 'day' && renderDayView()}
-
-  {showCreateEvent && renderCreateEventPopup()}
-  {showEventList && renderEventListPopup()}
-  {showContextMenu && renderContextMenu()}
-  {selectedEventDetails && renderEventPopup()}
-
-  {/* Define getContrastColor globally so it's accessible */}
-  <script>
-    {`
-      function getContrastColor(backgroundColor) {
-        if (!backgroundColor) return '#000000';
-        const hex = backgroundColor.replace('#', '');
-        const r = parseInt(hex.substr(0, 2), 16);
-        const g = parseInt(hex.substr(2, 2), 16);
-        const b = parseInt(hex.substr(4, 2), 16);
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return luminance > 0.5 ? '#000000' : '#ffffff';
-      }
-    `}
-  </script>
-</div>
+          <div className="event-popup-content">
+            <div className="form-group">
+              <label>Event Name</label>
+              {isEditing ? (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    type="text"
+                    value={editedEvent?.title || ""}
+                    onChange={(e) =>
+                      setEditedEvent({ ...editedEvent, title: e.target.value })
+                    }
+                    className="event-input"
+                    placeholder="Enter event name"
+                    style={{
+                      backgroundColor: editedEvent?.color || "#ffffff",
+                      color: "#000",
+                      flex: 1,
+                    }}
+                  />
+                  <input
+                    type="color"
+                    value={editedEvent?.color || "#000000"}
+                    onChange={(e) =>
+                      setEditedEvent({ ...editedEvent, color: e.target.value })
+                    }
+                    className="event-color-picker"
+                    style={{ marginLeft: "10px" }}
+                  />
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  value={selectedEventDetails?.title || ""}
+                  className="event-input"
+                  style={{
+                    backgroundColor: selectedEventDetails?.color || "#ffffff",
+                    color: "#000",
+                  }}
+                  readOnly
+                />
+              )}
+            </div>
+  
+            <div className="form-group">
+              <label>Repeat</label>
+              {isEditing ? (
+                <select
+                  className="event-select"
+                  value={editedEvent?.repeat || "none"}
+                  onChange={(e) =>
+                    setEditedEvent({ ...editedEvent, repeat: e.target.value })
+                  }
+                >
+                  <option value="none">None</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              ) : (
+                <select
+                  className="event-select"
+                  value={selectedEventDetails?.category || ""}
+                  disabled
+                >
+                  <option value="">Select category</option>
+                  <option value="meeting">Meeting</option>
+                  <option value="event">Event</option>
+                  <option value="task">Task</option>
+                </select>
+              )}
+            </div>
+  
+            <div className="event-popup-actions">
+              {isEditing ? (
+                <>
+                  <button className="cancel-button" onClick={handleCancelEdit}>
+                    Cancel
+                  </button>
+                  <button className="save-button" onClick={handleSaveEdit}>
+                    Save Changes
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="cancel-button"
+                    onClick={() => setSelectedEventDetails(null)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteEvent(selectedEventDetails.id)}
+                  >
+                    Delete
+                  </button>
+                  <button className="edit-button" onClick={handleEditEvent}>
+                    Edit Event
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  );
