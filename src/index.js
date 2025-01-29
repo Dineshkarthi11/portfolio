@@ -156,3 +156,89 @@ const renderEventPopup = () => (
     </div>
   )
 );
+
+
+
+/* Description Section */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.event-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Read-only textarea */
+.event-textarea[readonly] {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Event Popup Actions */
+.event-popup-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.cancel-button,
+.delete-button,
+.edit-button,
+.save-button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.save-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #b3b3b3;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.save-button:hover {
+  background-color: #218838;
+}
