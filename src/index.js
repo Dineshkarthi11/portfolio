@@ -21,10 +21,6 @@ const renderEventListPopup = () => (
           <div
             key={event.id}
             className="event-item"
-            onClick={() => {
-              setSelectedEventDetails(event);
-              setShowEventList(false);
-            }}
             style={{
               backgroundColor: event.color || '#ffffff',
               color: getContrastColor(event.color || '#ffffff'),
@@ -36,19 +32,19 @@ const renderEventListPopup = () => (
               position: 'relative'
             }}
           >
-            <div 
+            <div
               className="event-title"
               onMouseEnter={(e) => {
-                const hoverCard = e.currentTarget.nextElementSibling.nextElementSibling;
+                const hoverCard = e.currentTarget.nextElementSibling;
                 if (hoverCard) {
                   const rect = e.currentTarget.getBoundingClientRect();
                   hoverCard.style.display = 'block';
-                  hoverCard.style.left = `${rect.right + 10}px`;
-                  hoverCard.style.top = `${rect.top}px`;
+                  hoverCard.style.left = `${rect.left}px`;
+                  hoverCard.style.top = `${rect.bottom + 5}px`;
                 }
               }}
               onMouseLeave={(e) => {
-                const hoverCard = e.currentTarget.nextElementSibling.nextElementSibling;
+                const hoverCard = e.currentTarget.nextElementSibling;
                 if (hoverCard) {
                   hoverCard.style.display = 'none';
                 }
@@ -56,15 +52,14 @@ const renderEventListPopup = () => (
             >
               {event.title}
             </div>
-            <div className="event-time">{event.time}</div>
-              <EventHoverCard 
-                event={event}
-                onEdit={() => {
-                  setEditedEvent(event);
-                  setIsEditing(true);
-                }}
-                onDelete={handleDeleteEvent}
-              />
+            <EventHoverCard 
+              event={event}
+              onEdit={() => {
+                setEditedEvent(event);
+                setIsEditing(true);
+              }}
+              onDelete={handleDeleteEvent}
+            />
           </div>
         ))}
       </div>
@@ -72,29 +67,13 @@ const renderEventListPopup = () => (
   </div>
 );
 
-
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease-out;
-}
-
 const EventHoverCard = ({ event, onEdit, onDelete }) => (
   <div className="event-hover-card">
     <h4>{event.title}</h4>
-    <p>Description: {event.description}</p>
-    <p>Date: {formatDate(event.date)}</p>
-    <p>Time: {event.startTime}</p>
-    <p>Type: {event.type}</p>
+    <p><strong>Description:</strong> {event.description}</p>
+    <p><strong>Date:</strong> {formatDate(event.date)}</p>
+    <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
+    <p><strong>Type:</strong> {event.type}</p>
     <div className="hover-card-actions">
       <button 
         className="edit-btn"
@@ -118,34 +97,30 @@ const EventHoverCard = ({ event, onEdit, onDelete }) => (
   </div>
 );
 
-.event-hover-card {
-  position: absolute;
-  width: 300px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 
-    0 4px 24px -1px rgba(0, 0, 0, 0.1),
-    0 1px 8px -1px rgba(0, 0, 0, 0.06),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 50; 
-  animation: slideIn 0.2s ease-out;
-}
+
 
 .event-hover-card {
   position: absolute;
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12px;
-  min-width: 200px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  min-width: 220px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
   display: none;
+  z-index: 100;
+  transition: opacity 0.2s ease-in-out;
 }
 
-.event:hover + .event-hover-card,
-.event-hover-card:hover {
+.event-title {
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+}
+
+.event-title:hover + .event-hover-card {
   display: block;
 }
+
