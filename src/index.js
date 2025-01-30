@@ -9,6 +9,14 @@ root.render(
   </React.StrictMode>
 );
 
+ { 
+      id: 1, 
+      title: 'New Year Celebration', 
+      date: new Date(2025, 0, 1, 0, 0), 
+      type: 'all-day', 
+      description: 'Welcome the New Year!',
+    },
+
 
 
 const renderEventPopup = () => (
