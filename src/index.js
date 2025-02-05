@@ -9,6 +9,7 @@ root.render(
   </React.StrictMode>
 );
 
+
 import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useLanguage from "@/locale/useLanguage";
@@ -16,19 +17,13 @@ import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
 import { Dropdown, DropdownButton } from "react-bootstrap";
-
 import { BsGrid } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
 import AddTask from "./Addtask/Addtask";
-
 import { RiListSettingsFill } from "react-icons/ri";
-
 import PageSetup from "@/context/GlobalContext/PageSetup.json";
-
 import { ContextWidthProvider } from "@/context/widthContext/widthContext";
-
 import {
   entitiesInfo,
   dataSetListInfo,
@@ -37,7 +32,6 @@ import {
 import { PiExportBold } from "react-icons/pi";
 import { ArcIconComponents } from "@/components/arccomponents/ArcIcon";
 import ARcexportalertpopup from "@/components/arccomponents/ui-components/ArcAlertPopup/ARcexportalertpopup";
-// import { GrNotes } from "react-icons/gr";
 import { CgImport } from "react-icons/cg";
 import { CreateNewExport } from "@/redux/Exporthistory/Createnewexport/createNewExport";
 import { postDataInfo } from "@/redux/Task/selector";
@@ -49,7 +43,7 @@ import {
   SelectedRowContextProvider,
 } from "@/context/SelectedRow/SelectedRowContext";
 import { WeekFilterV3 } from "@/components/arccomponents/ui-components/ArcYearWeekPicker/ArcYearWeekPicker";
-//import { SelectedRowContextProvider } from "@/context/SelectedRow/SelectedRowContext";
+
 export default function ListHeader({
   DataSetPopupShow,
   setDataSetPopupShow,
@@ -63,7 +57,6 @@ export default function ListHeader({
   const postdata = useSelector(postDataInfo);
   console.log("Inside ListPage ListHeader");
   const { ScreenWidth, BreakpointSm } = useContext(ContextWidthProvider);
-
   const entities = useSelector(entitiesInfo);
   console.log(entities);
   const dataSetList = useSelector(dataSetListInfo);
@@ -73,18 +66,11 @@ export default function ListHeader({
   var [popupshow, setpopupshow] = useState(false);
   var [Formatpopupshow, setFormatpopupshow] = useState(false);
 
-  // const [ArcFilterPopupshow, setArcFilterPopupshow] = useState(false);
-
-
-  //
-  // const [addTaskShow, setAddTaskShow] = useState(false);
   const { addTaskShow, setAddTaskShow, titleFieldValue, setTitleFieldValue } =
     useContext(SelectedRowContext);
-  //edit task
 
   const [editTaskShow, setEditTaskShow] = useState(false);
   const [selectedRow, setSelectedRow] = useState([]);
-  // const [titleFieldValue, setTitleFieldValue] = useState([]);
   const [UpdateselectedTagItemEdit, setUpdateselectedTagItemEdit] = useState(
     []
   );
@@ -103,8 +89,6 @@ export default function ListHeader({
     <React.Fragment>
       <ArcFilterPopup
         Title="Arc Filter Popup"
-        // ArcPopupshow={ArcFilterPopupshow}
-        // setArcPopupshow={setArcFilterPopupshow}
         BtnClassName="arc-btn-primary"
         PopupClassName=""
         centered={true}
@@ -112,10 +96,8 @@ export default function ListHeader({
         setSelectedRow={setSelectedRow}
         selectedRow={selectedRow}
         setAddTaskShow={setAddTaskShow}
-        // titleFieldValue={titleFieldValue}
-        // setTitleFieldValue={setTitleFieldValue}
       ></ArcFilterPopup>
-    
+
       {ModuleHeader.Visibility && (
         <section className="list-header">
           <Container fluid>
@@ -126,9 +108,7 @@ export default function ListHeader({
                     {ModuleHeader.DataSetIcon && (
                       <span
                         ref={DataSetButton}
-                        className={`icon ${
-                          DataSetPopupShow ? "true" : "false"
-                        }`}
+                        className={`icon ${DataSetPopupShow ? "true" : "false"}`}
                         onClick={() =>
                           setDataSetPopupShow(
                             (prevDataSetPopupShow) => !prevDataSetPopupShow
@@ -149,6 +129,18 @@ export default function ListHeader({
                     </div>
                   </div>
                   <div className="action-add">
+                    {/* New Status Dropdown Button */}
+                    <DropdownButton
+                      align="end"
+                      id="dropdown-status-button"
+                      title="Status"
+                      variant="secondary"
+                    >
+                      <Dropdown.Item eventKey="1">Send for approval</Dropdown.Item>
+                      <Dropdown.Item eventKey="2">Approval</Dropdown.Item>
+                      <Dropdown.Item eventKey="3">Rejected</Dropdown.Item>
+                    </DropdownButton>
+
                     {ModuleHeader.HeaderButton.MoreAction.Visibility && (
                       <DropdownButton
                         align="end"
@@ -185,13 +177,10 @@ export default function ListHeader({
                       </DropdownButton>
                     )}
 
-                    
                     <AddTask
                       setArcFilterPopupshow={setArcFilterPopupshow}
                       show={addTaskShow}
                       setShow={setAddTaskShow}
-                      // setTitleFieldValue={setTitleFieldValue}
-                      // titleFieldValue={titleFieldValue}
                     />
 
                     <EditTask
@@ -213,4 +202,3 @@ export default function ListHeader({
     </React.Fragment>
   );
 }
-
