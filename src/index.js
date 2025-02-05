@@ -10,7 +10,8 @@ root.render(
 );
 
 
-import React, { useContext, useState } from "react";
+
+        import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useLanguage from "@/locale/useLanguage";
 import { useNavigate } from "react-router-dom";
@@ -55,10 +56,8 @@ export default function ListHeader({
   const navigate = useNavigate();
   const exportedfrom = "Task";
   const postdata = useSelector(postDataInfo);
-  console.log("Inside ListPage ListHeader");
   const { ScreenWidth, BreakpointSm } = useContext(ContextWidthProvider);
   const entities = useSelector(entitiesInfo);
-  console.log(entities);
   const dataSetList = useSelector(dataSetListInfo);
   const loggedinusermail = useSelector(usereamilInfo);
   const ModuleHeader = PageSetup.Pages.ListPage.Header;
@@ -66,14 +65,11 @@ export default function ListHeader({
   var [popupshow, setpopupshow] = useState(false);
   var [Formatpopupshow, setFormatpopupshow] = useState(false);
 
-  const { addTaskShow, setAddTaskShow, titleFieldValue, setTitleFieldValue } =
-    useContext(SelectedRowContext);
+  const { addTaskShow, setAddTaskShow } = useContext(SelectedRowContext);
 
   const [editTaskShow, setEditTaskShow] = useState(false);
   const [selectedRow, setSelectedRow] = useState([]);
-  const [UpdateselectedTagItemEdit, setUpdateselectedTagItemEdit] = useState(
-    []
-  );
+  const [UpdateselectedTagItemEdit, setUpdateselectedTagItemEdit] = useState([]);
   const [istageditedEditTask, setistageditedEditTask] = useState(false);
 
   const {
@@ -82,8 +78,14 @@ export default function ListHeader({
     ArcFilterPopupshow,
     setArcFilterPopupshow,
   } = useContext(SelectedRowContext);
-  console.log(EditTaskShow, "s12");
-  console.log(selectedRow1, "empty");
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState("Select Status");
+
+  const handleSelect = (eventKey) => {
+    setSelectedStatus(eventKey);
+    setShowDropdown(false);
+  };
 
   return (
     <React.Fragment>
@@ -129,17 +131,24 @@ export default function ListHeader({
                     </div>
                   </div>
                   <div className="action-add">
-                    {/* New Status Dropdown Button */}
-                    <DropdownButton
-                      align="end"
-                      id="dropdown-status-button"
-                      title="Status"
-                      variant="secondary"
-                    >
-                      <Dropdown.Item eventKey="1">Send for approval</Dropdown.Item>
-                      <Dropdown.Item eventKey="2">Approval</Dropdown.Item>
-                      <Dropdown.Item eventKey="3">Rejected</Dropdown.Item>
-                    </DropdownButton>
+                    {/* Status Dropdown */}
+                    <Dropdown show={showDropdown} onToggle={setShowDropdown}>
+                      <Dropdown.Toggle variant="secondary" id="dropdown-status">
+                        {selectedStatus}
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item eventKey="Send for approval" onClick={() => handleSelect("Send for approval")}>
+                          Send for approval
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="Approval" onClick={() => handleSelect("Approval")}>
+                          Approval
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="Rejected" onClick={() => handleSelect("Rejected")}>
+                          Rejected
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
 
                     {ModuleHeader.HeaderButton.MoreAction.Visibility && (
                       <DropdownButton
@@ -202,3 +211,4 @@ export default function ListHeader({
     </React.Fragment>
   );
 }
+                
