@@ -100,3 +100,6 @@ function LeadTablesSection() {
 }
 
 export default LeadTablesSection;
+
+
+I have been diagnosed with dengue fever and am currently under medical supervision. My doctor has advised me to rest and monitor my platelet levels. As of now, there is no need for a platelet transfusion, but I will keep you updated on my health condition
