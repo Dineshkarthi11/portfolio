@@ -1,3 +1,6 @@
+ <img width="1381" height="768" alt="Hospital3d" src="https://github.com/user-attachments/assets/12111ea9-159c-42aa-9ba2-bb28e1b9256f" />
+<img width="1381" height="768" alt="Hospitalrender" src="https://github.com/user-attachments/assets/d51aed33-e249-4f2a-828c-0fb1b2185f6a" />
+<img width="1681" height="935" alt="Hospital2d" src="https://github.com/user-attachments/assets/1b720a0f-2756-473c-b947-c723ce19eb22" />
 <img width="1190" height="880" alt="photo_2026-06-10_15-33-38" src="https://github.com/user-attachments/assets/b06857ab-1d8c-4886-bb1a-0b1603d62a09" />
 <img width="1191" height="880" alt="photo_2026-06-10_15-33-08" src="https://github.com/user-attachments/assets/7e1420b6-3e27-4708-98af-60fa702f2198" />
 <img width="1190" height="880" alt="photo_2026-06-10_15-33-30" src="https://github.com/user-attachments/assets/4c3b7371-3554-4446-9dd6-8f91457a5f5c" />
