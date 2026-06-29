@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinesh Kumar — Site Supervisor & Interior Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0D0D0B;
+    --bg2: #141412;
+    --bg3: #1C1C19;
+    --gold: #C9A84C;
+    --gold2: #E8C97A;
+    --text: #F0EDE6;
+    --muted: #9C9A94;
+    --subtle: #5A5955;
+    --border: rgba(201,168,76,0.15);
+    --border2: rgba(201,168,76,0.08);
+    --radius: 14px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 48px;
+    background: rgba(13,13,11,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border2);
+    transition: padding 0.3s;
+  }
+  nav.scrolled { padding: 12px 48px; }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 500;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    border-radius: 30px;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-tagline {
+    font-size: clamp(14px, 2vw, 18px);
+    color: var(--muted);
+    margin-top: 20px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    max-width: 560px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat-num sup { font-size: 20px; vertical-align: super; }
+  .hero-stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+  .hero-scroll span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ── SECTION LAYOUT ── */
+  section { padding: 100px 48px; }
+  .sec-inner { max-width: 900px; margin: 0 auto; }
+
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 52px;
+  }
+  .sec-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    font-style: italic;
+    opacity: 0.7;
+  }
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* ── ABOUT ── */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .about-text p {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+  .about-text p + p { margin-top: 16px; }
+  .about-highlight {
+    color: var(--gold2);
+    font-weight: 500;
+  }
+  .about-details { display: flex; flex-direction: column; gap: 14px; }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--bg3);
+    border-radius: 10px;
+    border: 1px solid var(--border2);
+  }
+  .detail-key {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .detail-val {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--bg); }
+  .exp-timeline { position: relative; }
+  .exp-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  .exp-item {
+    padding-left: 36px;
+    padding-bottom: 52px;
+    position: relative;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s ease;
+  }
+  .exp-item.visible { opacity: 1; transform: translateX(0); }
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(201,168,76,0.5);
+  }
+  .exp-period {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .exp-company {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .exp-role-title {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .exp-pts { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .exp-pts li {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    padding-left: 18px;
+    position: relative;
+    font-weight: 300;
+  }
+  .exp-pts li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 6px;
+    top: 6px;
+  }
+
+  /* ── PROJECTS INTERACTIVE DESIGN HUB ── */
+  #projects { background: var(--bg2); }
+  
+  .proj-hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    font-weight: 500;
+  }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .proj-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  .proj-card.visible { opacity: 1; transform: translateY(0); }
+  
+  .proj-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201,168,76,0.4);
+  }
+
+  .proj-design-hub {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.4);
+    aspect-ratio: 16 / 9;
+    background: #111;
+  }
+
+  .hub-viewport {
+    width: 100%;
+    height: 100%;
+  }
+  .hub-viewport img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease;
+    cursor: zoom-in; /* Indicates it can be clicked to preview */
+  }
+
+  .hub-switcher {
+    display: flex;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    padding: 3px;
+    border-radius: 30px;
+    margin: 16px 0 14px;
+    align-self: center;
+    width: calc(100% - 30px);
+    max-width: 380px;
+  }
+  .hub-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 0;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .hub-btn.active {
+    background: var(--gold);
+    color: var(--bg);
+  }
+
+  .proj-icon-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border2);
+  }
+  
+  .proj-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .proj-icon svg { width: 17px; height: 17px; stroke: var(--gold); }
+  
+  .proj-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+  .proj-company { font-size: 12px; color: var(--gold2); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .proj-desc { font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* ── NEW FEATURE: MODERN PREMIUM LIGHTBOX OVERLAY ── */
+  .lightbox-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(13, 13, 11, 0.92);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    cursor: zoom-out; /* Indicates clicking anywhere closes it */
+  }
+  .lightbox-modal.active {
+    display: flex;
+    opacity: 1;
+  }
+  .lightbox-content {
+    max-width: 85%;
+    max-height: 85%;
+    border-radius: 10px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    border: 1px solid rgba(201,168,76,0.2);
+    transform: scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .lightbox-modal.active .lightbox-content {
+    transform: scale(1);
+  }
+  .lightbox-close-btn {
+    position: absolute;
+    top: 30px; right: 40px;
+    color: var(--text);
+    font-size: 38px;
+    cursor: pointer;
+    font-weight: 300;
+    transition: color 0.3s;
+  }
+  .lightbox-close-btn:hover { color: var(--gold); }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--bg); }
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .skill-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.5s ease;
+  }
+  .skill-card.visible { opacity: 1; transform: translateY(0); }
+  .skill-cat-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-size: 12px;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    font-weight: 400;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .tag:hover { border-color: var(--gold); color: var(--gold2); }
+
+  /* ── ACHIEVEMENTS ── */
+  #achievements { background: var(--bg2); }
+  .ach-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .ach-card {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 22px 24px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    transition: border-color 0.3s;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  .ach-card.visible { opacity: 1; transform: translateY(0); }
+  .ach-card:hover { border-color: var(--border); }
+  .ach-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .ach-num sup { font-size: 13px; vertical-align: super; }
+  .ach-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .ach-text strong { color: var(--text); font-weight: 500; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--bg); }
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .contact-tagline {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .contact-tagline em { font-style: italic; color: var(--gold); }
+  .contact-sub {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .contact-items { display: flex; flex-direction: column; gap: 14px; }
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    transition: border-color 0.3s;
+  }
+  .contact-row:hover { border-color: var(--border); }
+  .contact-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(201,168,76,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-icon svg { width: 16px; height: 16px; stroke: var(--gold); }
+  .contact-val { font-size: 14px; color: var(--text); font-weight: 400; }
+  .contact-key { font-size: 11px; color: var(--subtle); letter-spacing: 1px; margin-top: 2px; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 40px 48px;
+    border-top: 1px solid var(--border2);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  footer span { color: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.4; transform: scaleY(0.8); }
+  }
+
+  /* ── MOBILE ── */
+  @media(max-width: 700px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    section { padding: 70px 20px; }
+    #hero { padding: 100px 20px 60px; }
+    .hero-stats { gap: 28px; flex-wrap: wrap; }
+    .about-grid,
+    .proj-grid,
+    .skills-layout,
+    .ach-grid,
+    .contact-wrap { grid-template-columns: 1fr; gap: 24px; }
+    .hero-name { letter-spacing: -1px; }
+    .exp-timeline::before { display: none; }
+    .exp-item { padding-left: 0; }
+    .exp-item::before { display: none; }
+    .lightbox-close-btn { top: 20px; right: 20px; font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">DK</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:dineshkarthi899@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+    <div class="hero-label">Site Supervisor &nbsp;·&nbsp; Interior Designer &nbsp;·&nbsp; Chennai</div>
+    <div class="hero-name">Dinesh<br><em>Kumar</em></div>
+    <div class="hero-tagline">Dual-role construction professional combining hands-on site mastery with refined interior design — delivering spaces that are built right and look extraordinary.</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">26<sup>+</sup></div>
+        <div class="hero-stat-label">Villas Supervised</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">18<sup>+</sup></div>
+        <div class="hero-stat-label">Interior Projects</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">20<sup>%</sup></div>
+        <div class="hero-stat-label">Overrun Reduction</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">100<sup>%</sup></div>
+        <div class="hero-stat-label">Client Approvals</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-num">01 /</span>
+      <span class="sec-title">About Me</span>
+      <span class="sec-line"></span>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Dynamic and detail-oriented construction professional with <span class="about-highlight">5–7 years of hands-on experience</span> in both site supervision and interior design — a rare combination that bridges the gap between structural execution and aesthetic vision.</p>
+        <p>I've supervised 26+ villa projects from foundation to handover, while simultaneously delivering 18+ interior design projects spanning residential and commercial spaces. My strength lies in combining <span class="about-highlight">on-ground site management</span> with a sharp eye for space planning and client-focused design.</p>
+        <p>Proven ability to manage contractors, coordinate vendors, control timelines, and deliver quality finishes <span class="about-highlight">on schedule and within budget</span> — every single time.</p>
+      </div>
+      <div class="about-details">
+        <div class="detail-row">
+          <span class="detail-key">Location</span>
+          <span class="detail-val">Chennai, Tamil Nadu</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Experience</span>
+          <span class="detail-val">6+ Years</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Education</span>
+          <span class="detail-val">B.E. Civil Engineering</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Current Role</span>
+          <span class="detail-val">TheShiv Construction</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Specialisation</span>
+          <span class="detail-val">Residential Villas</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Languages</span>
+          <span class="detail-val">Tamil · English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-num">02 /</span>
+      <span class="sec-title">Experience</span>
+      <span class="sec-line"></span>
+    </div>
+    <div class="exp-timeline">
+
+      <div class="exp-item reveal">
+        <div class="exp-period">2020 — Present</div>
+        <div class="exp-company">TheShiv Construction</div>
+        <div class="exp-role-title">Site Supervisor &amp; Interior Designer · Chennai</div>
+        <ul class="exp-pts">
+          <li>Supervised end-to-end construction of 26+ residential villa projects — from foundation laying to final client handover</li>
+          <li>Coordinated daily site activities including labour deployment, material procurement, and quality checks to ensure zero project delays</li>
+          <li>Liaised with architects, structural engineers, and contractors to resolve on-site technical issues and ensure design compliance</li>
+          <li>Maintained site safety standards and ensured all activities met local regulatory and building code requirements</li>
+          <li>Prepared daily site progress reports, MIS updates, and handover documentation for client and management review</li>
+          <li>Managed subcontractor coordination and material inventory — reducing project overruns by 20%</li>
+          <li>Conducted quality inspections at every milestone — RCC, brickwork, plastering, tiling, and finishing — before client sign-off</li>
+        </ul>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-period">2019 — 2020</div>
+        <div class="exp-company">Sakthi Construction</div>
+        <div class="exp-role-title">Site Supervisor &amp; Interior Designer · Coimbatore</div>
+        <ul class="exp-pts">
+          <li>Designed and executed 18+ interior projects including luxury residential villas, apartments, and commercial office spaces</li>
+          <li>Developed concept presentations, mood boards, material palettes, and 2D/3D layout plans tailored to client lifestyle and budget</li>
+          <li>Handled complete space planning — living areas, bedrooms, kitchens, bathrooms, and landscaped outdoor areas</li>
+          <li>Sourced and coordinated procurement of furniture, fixtures, false ceilings, flooring, lighting, and décor from verified vendors</li>
+          <li>Collaborated closely with civil and site teams to ensure seamless integration of interior design with construction</li>
+          <li>Managed client walkthroughs, design approvals, and change requests — maintaining high satisfaction and zero escalations</li>
+          <li>Prepared detailed BOQ and project cost estimates, keeping all projects within approved budgets</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-num">03 /</span>
+      <span class="sec-title">Design Studio: Notable Projects</span>
+      <span class="sec-line"></span>
+    </div>
+    
+    <div class="proj-hint">💡 Tap tabs to switch views. Click the image to open fullscreen preview!</div>
+
+    <div class="proj-grid">
+
+      <div class="proj-card reveal" id="proj-card-1">
+        <div class="proj-design-hub">
+          <div class="hub-viewport" id="viewport-1">
+            <img src="https://github.com/user-attachments/assets/85a63f44-7349-4a68-8fe4-92241df3215f" alt="2D Zen Living Room Plan" class="active-hub-view">
+          </div>
+        </div>
+        <div class="hub-switcher">
+          <button class="hub-btn active" onclick="switchHubView(1, '2d', this)">2D PLAN</button>
+          <button class="hub-btn" onclick="switchHubView(1, '3d', this)">3D MODEL</button>
+          <button class="hub-btn" onclick="switchHubView(1, 'render', this)">RENDER</button>
+        </div>
+        <div class="proj-icon-row">
+          <div class="proj-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/>
+            </svg>
+          </div>
+          <sup class="proj-count-label">Theshiv-RKJ</sup>
+        </div>
+        <div class="proj-title">RKJ Elite</div>
+        <div class="proj-company">Theshiv Properties and Construction · Chennai</div>
+        <div class="proj-desc">Photo-realistic render of a tropical villa — natural stone cladding, teak wood louvers, glass balustrade balcony, and lush front landscaping capture the final client-ready vision.</div>
+      </div>
+
+      <div class="proj-card reveal" id="proj-card-2">
+        <div class="proj-design-hub">
+          <div class="hub-viewport" id="viewport-2">
+            <img src="https://github.com/user-attachments/assets/7e1420b6-3e27-4708-98af-60fa702f2198" alt="Cove Office" class="active-hub-view">
+          </div>
+        </div>
+        <div class="hub-switcher">
+          <button class="hub-btn active" onclick="switchHubView(2, '2d', this)">2D PLAN</button>
+          <button class="hub-btn" onclick="switchHubView(2, '3d', this)">3D MODEL</button>
+          <button class="hub-btn" onclick="switchHubView(2, 'render', this)">RENDER</button>
+        </div>
+        <div class="proj-icon-row">
+          <div class="proj-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/>
+            </svg>
+          </div>
+          <sup class="proj-count-label">Cove</sup>
+        </div>
+        <div class="proj-title">Cove Office</div>
+        <div class="proj-company">Theshiv Properties and Construction · Chennai</div>
+        <div class="proj-desc">Full-cycle project delivery — AutoCAD ground floor planning, evening render visualization, and built photography of a mixed-use campus combining Cove's co-working lobby with a residential apartment block on a single Chennai site.</div>
+      </div>
+
+      <div class="proj-card reveal" style="transition-delay:0.1s" id="proj-card-3">
+        <div class="proj-design-hub">
+          <div class="hub-viewport" id="viewport-3">
+            <img src="https://github.com/user-attachments/assets/1775a672-fa23-4a4c-81ff-6b0b7b57da84" alt="3BHK Villa AutoCAD 2D Plan" class="active-hub-view">
+          </div>
+        </div>
+        <div class="hub-switcher">
+          <button class="hub-btn active" onclick="switchHubView(3, '2d', this)">2D PLAN</button>
+          <button class="hub-btn" onclick="switchHubView(3, '3d', this)">3D MODEL</button>
+          <button class="hub-btn" onclick="switchHubView(3, 'render', this)">RENDER</button>
+        </div>
+        <div class="proj-icon-row">
+          <div class="proj-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-4h6v4"/>
+            </svg>
+          </div>
+          <sup class="proj-count-label">JK Avenue</sup>
+        </div>
+        <div class="proj-title">Luxury 3BHK Residential Villa</div>
+        <div class="proj-company">Theshiv Properties and Construction · Chennai</div>
+        <div class="proj-desc">Tropical contemporary villa with timber-clad upper volume, cantilevered car porch, and full-height glazing — a clean 3D massing study before final render.</div>
+      </div>
+
+      <div class="proj-card reveal" style="transition-delay:0.2s" id="proj-card-4">
+        <div class="proj-design-hub">
+          <div class="hub-viewport" id="viewport-4">
+            <img src="https://github.com/user-attachments/assets/86e4d217-7eeb-4284-8670-0b0932467a34" alt="2D Lighting Plan" class="active-hub-view">
+          </div>
+        </div>
+        <div class="hub-switcher">
+          <button class="hub-btn active" onclick="switchHubView(4, '2d', this)">2D PLAN</button>
+          <button class="hub-btn" onclick="switchHubView(4, '3d', this)">3D MODEL</button>
+          <button class="hub-btn" onclick="switchHubView(4, 'render', this)">RENDER</button>
+        </div>
+        <div class="proj-icon-row">
+          <div class="proj-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/>
+            </svg>
+          </div>
+          <sup class="proj-count-label">SakthiFit-out</sup>
+        </div>
+        <div class="proj-title">Sakthi Enclave</div>
+        <div class="proj-company">Sakthi Construction · Coimbatore</div>
+        <div class="proj-desc">G+1 villa with open rooftop lounge, master bed balcony, and a compact footprint optimised for a 30×40 corner plot in Chennai's residential layout.
+</div>
+      </div>
+
+      <div class="proj-card reveal" style="transition-delay:0.3s" id="proj-card-5">
+        <div class="proj-design-hub">
+          <div class="hub-viewport" id="viewport-5">
+            <img src="https://github.com/user-attachments/assets/791645ec-ae00-4869-afae-e8c565130d46" alt="2D Desk Layout Plan" class="active-hub-view">
+          </div>
+        </div>
+        <div class="hub-switcher">
+          <button class="hub-btn active" onclick="switchHubView(5, '2d', this)">2D PLAN</button>
+          <button class="hub-btn" onclick="switchHubView(5, '3d', this)">3D MODEL</button>
+          <button class="hub-btn" onclick="switchHubView(5, 'render', this)">RENDER</button>
+        </div>
+        <div class="proj-icon-row">
+          <div class="proj-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/>
+            </svg>
+          </div>
+          <sup class="proj-count-label">Theshiv</sup>
+        </div>
+        <div class="proj-title">Arum Lily</div>
+        <div class="proj-company">Theshiv Properties and Construction · Chennai</div>
+        <div class="proj-desc">Street-context 3D model blending Mangalore tile roofing with modern white plaster and brick detailing — a sensitive design response to an established residential streetscape.</div>
+      </div>
+
+      <div class="proj-card reveal" style="transition-delay:0.3s" id="proj-card-6">
+        <div class="proj-design-hub">
+          <div class="hub-viewport" id="viewport-6">
+            <img src="https://github.com/user-attachments/assets/f8382074-9ae2-4a75-b039-d484abe8de43" alt="2D Desk Layout Plan" class="active-hub-view">
+          </div>
+        </div>
+        <div class="hub-switcher">
+          <button class="hub-btn active" onclick="switchHubView(6, '2d', this)">2D PLAN</button>
+          <button class="hub-btn" onclick="switchHubView(6, '3d', this)">3D MODEL</button>
+          <button class="hub-btn" onclick="switchHubView(6, 'render', this)">RENDER</button>
+        </div>
+        <div class="proj-icon-row">
+          <div class="proj-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/>
+            </svg>
+          </div>
+          <sup class="proj-count-label">Theshiv</sup>
+        </div>
+        <div class="proj-title">JK Avenue</div>
+        <div class="proj-company">Theshiv Properties and Construction · Chennai</div>
+        <div class="proj-desc">Five-storey residential block with staggered balconies, rooftop garden terrace, and a landscaped compound — designed for a dense urban plot without compromising on light or ventilation</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div id="portfolio-lightbox" class="lightbox-modal">
+  <span class="lightbox-close-btn">&times;</span>
+  <img class="lightbox-content" id="lightbox-main-img" src="" alt="Portfolio Image Preview">
+</div>
+
+<section id="skills">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-num">04 /</span>
+      <span class="sec-title">Skills &amp; Expertise</span>
+      <span class="sec-line"></span>
+    </div>
+    <div class="skills-layout">
+
+      <div class="skill-card reveal">
+        <div class="skill-cat-label">Site Management</div>
+        <div class="tags">
+          <span class="tag">Site Supervision</span>
+          <span class="tag">Construction Planning</span>
+          <span class="tag">Labour Management</span>
+          <span class="tag">Quality Control</span>
+          <span class="tag">Safety Compliance</span>
+          <span class="tag">Progress Reporting</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal" style="transition-delay:0.1s">
+        <div class="skill-cat-label">Interior Design</div>
+        <div class="tags">
+          <span class="tag">Space Planning</span>
+          <span class="tag">Concept Design</span>
+          <span class="tag">Material Selection</span>
+          <span class="tag">BOQ Preparation</span>
+          <span class="tag">False Ceiling</span>
+          <span class="tag">Lighting Design</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal" style="transition-delay:0.2s">
+        <div class="skill-cat-label">Technical Tools</div>
+        <div class="tags">
+          <span class="tag">AutoCAD 2D</span>
+          <span class="tag">SketchUp 3D</span>
+          <span class="tag">MS Excel</span>
+          <span class="tag">Site Measurement</span>
+          <span class="tag">Cost Estimation</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal" style="transition-delay:0.3s">
+        <div class="skill-cat-label">Project Management</div>
+        <div class="tags">
+          <span class="tag">Timeline Management</span>
+          <span class="tag">Vendor Coordination</span>
+          <span class="tag">Budget Control</span>
+          <span class="tag">Client Communication</span>
+          <span class="tag">Contractor Management</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-num">05 /</span>
+      <span class="sec-title">Key Achievements</span>
+      <span class="sec-line"></span>
+    </div>
+    <div class="ach-grid">
+
+      <div class="ach-card reveal">
+        <div class="ach-num">26<sup>+</sup></div>
+        <div class="ach-text"><strong>Villa projects</strong> delivered on time with zero structural defects at handover — from foundation to final client sign-off</div>
+      </div>
+
+      <div class="ach-card reveal" style="transition-delay:0.1s">
+        <div class="ach-num">18<sup>+</sup></div>
+        <div class="ach-text"><strong>Interior projects</strong> completed with 100% client approval — earning repeat referrals and strong word-of-mouth growth</div>
+      </div>
+
+      <div class="ach-card reveal" style="transition-delay:0.2s">
+        <div class="ach-num">20<sup>%</sup></div>
+        <div class="ach-text"><strong>Reduction in project overruns</strong> through tight subcontractor coordination and proactive schedule management</div>
+      </div>
+
+      <div class="ach-card reveal" style="transition-delay:0.3s">
+        <div class="ach-num">18<sup>%</sup></div>
+        <div class="ach-text"><strong>Material wastage reduced</strong> through systematic procurement planning and on-site inventory management</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-num">06 /</span>
+      <span class="sec-title">Get In Touch</span>
+      <span class="sec-line"></span>
+    </div>
+    <div class="contact-wrap">
+      <div class="contact-left">
+        <div class="contact-tagline">Let's build something <em>remarkable</em> together.</div>
+        <div class="contact-sub">Whether you need a reliable site supervisor, a creative interior designer, or both — I bring the full package. Available for residential, commercial, and turnkey projects across Chennai and beyond.</div>
+      </div>
+      <div class="contact-items">
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.44 10a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.55 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-val">+91 8489482709</div>
+            <div class="contact-key">Phone / WhatsApp</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-val">dineshkarthi899@gmail.com</div>
+            <div class="contact-key">Email</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Dinesh Kumar</span> &nbsp;·&nbsp; Site Supervisor &amp; Interior Designer &nbsp;·&nbsp; Chennai &nbsp;·&nbsp; 2026
+</footer>
+
+<script>
+  // NAV SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // SMOOTH ACTIVE NAV
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--gold)'
+        : 'var(--muted)';
+    });
+  });
+
+  // COUNTER ANIMATION on hero stats
+  function animateCount(el, target, suffix) {
+    let start = 0;
+    const step = Math.ceil(target / 40);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { start = target; clearInterval(timer); }
+      el.innerHTML = start + '<sup>' + suffix + '</sup>';
+    }, 40);
+  }
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      animateCount(document.querySelectorAll('.hero-stat-num')[0], 26, '+');
+      animateCount(document.querySelectorAll('.hero-stat-num')[1], 18, '+');
+      animateCount(document.querySelectorAll('.hero-stat-num')[2], 20, '%');
+      animateCount(document.querySelectorAll('.hero-stat-num')[3], 100, '%');
+    }, 900);
+  });
+
+  // ── DESIGN HUB TAB SWITCHING LOGIC ──
+  // Integrated directly with your newly uploaded structural assets for Project 2!
+  const projImageData = {
+    1: { '2d': 'https://github.com/user-attachments/assets/85a63f44-7349-4a68-8fe4-92241df3215f', '3d': 'https://github.com/user-attachments/assets/94468c6f-b954-4cfb-9277-53226d38f0db', 'render': 'https://github.com/user-attachments/assets/d48a5ed4-72b5-4976-a09d-c7e095363d9d' },
+    2: { '2d': 'https://github.com/user-attachments/assets/7e1420b6-3e27-4708-98af-60fa702f2198', '3d': 'https://github.com/user-attachments/assets/4c3b7371-3554-4446-9dd6-8f91457a5f5c', 'render': 'https://github.com/user-attachments/assets/b06857ab-1d8c-4886-bb1a-0b1603d62a09' },
+    3: { '2d': 'https://github.com/user-attachments/assets/1a3841a3-b82a-491e-ac7e-727d3d2fcb11', '3d': 'https://github.com/user-attachments/assets/f9f0dc2b-9a3f-40dc-8fb3-b9c3b60bc38b', 'render': 'https://github.com/user-attachments/assets/1775a672-fa23-4a4c-81ff-6b0b7b57da84' }, // Loaded perfectly
+    4: { '2d': 'https://github.com/user-attachments/assets/86e4d217-7eeb-4284-8670-0b0932467a34', '3d': 'https://github.com/user-attachments/assets/363eb60b-c0d1-4116-82fc-4f7404a03fdd', 'render': 'https://github.com/user-attachments/assets/13028125-b2e2-42c8-a6cf-7bc881075d32' },
+    5: { '2d': 'https://github.com/user-attachments/assets/791645ec-ae00-4869-afae-e8c565130d46', '3d': 'https://github.com/user-attachments/assets/e1d90af1-3e97-4e0d-861d-f9822b0c6c9a', 'render': 'https://github.com/user-attachments/assets/a26011c0-e414-46f7-bf7b-059c9158f57f' },
+    6: { '2d': 'https://github.com/user-attachments/assets/f8382074-9ae2-4a75-b039-d484abe8de43', '3d': 'https://github.com/user-attachments/assets/99a3169d-26b0-4431-9029-7c94c0644ab1', 'render': 'https://github.com/user-attachments/assets/95f681b1-6f32-4303-b087-6d5b19e6747d' }
+  };
+
+  function switchHubView(projId, type, btnEl) {
+    const viewport = document.getElementById(`viewport-${projId}`);
+    const card = document.getElementById(`proj-card-${projId}`);
+    const currentImg = viewport.querySelector('img');
+    
+    currentImg.style.opacity = '0';
+
+    setTimeout(() => {
+      currentImg.src = projImageData[projId][type];
+      
+      const switcher = card.querySelector('.hub-switcher');
+      switcher.querySelectorAll('.hub-btn').forEach(btn => btn.classList.remove('active'));
+      btnEl.classList.add('active');
+
+      currentImg.style.opacity = '1';
+    }, 150);
+  }
+
+  // ── NEW FEATURE JS: SMOOTH LIGHTBOX MODAL LOGIC ──
+  const lightbox = document.getElementById('portfolio-lightbox');
+  const lightboxImg = document.getElementById('lightbox-main-img');
+
+  // Trigger preview window instantly when ANY dynamic project image is touched
+  document.querySelectorAll('.hub-viewport img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      lightboxImg.src = e.target.src;
+      lightboxImg.alt = e.target.alt;
+      lightbox.classList.add('active');
+    });
+  });
+
+  // Safe Close setup: Clicking anywhere on the backdrop mask or cross button closes it cleanly
+  lightbox.addEventListener('click', (e) => {
+    if (e.target !== lightboxImg) {
+      lightbox.classList.remove('active');
+    }
+  });
+</script>
+</body>
+</html>
