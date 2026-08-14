@@ -1,3 +1,7 @@
+<img width="1536" height="1024" alt="Loyaltri" src="https://github.com/user-attachments/assets/a8fbf14a-8ae3-4d3f-99c7-eb2f927e6739" />
+<img width="1536" height="1024" alt="Medcare" src="https://github.com/user-attachments/assets/eafe8354-3cd1-4500-b0ac-50fa296d05da" />
+<img width="1536" height="1024" alt="Aura" src="https://github.com/user-attachments/assets/09884f31-b501-4925-b3d8-62e6f9604f66" />
+<img width="1536" height="1024" alt="MonkifyAI" src="https://github.com/user-attachments/assets/5fc5af92-4cb0-421b-b455-feab90089dc1" />
 <img width="1342" height="693" alt="Residential3" src="https://github.com/user-attachments/assets/cd6fe491-06a5-43b8-938f-33bf8aebeb38" />
 <img width="1408" height="768" alt="Residential2" src="https://github.com/user-attachments/assets/44f62cb2-1d0e-4950-bb24-a82769a6831a" />
 <img width="1698" height="926" alt="Residential1" src="https://github.com/user-attachments/assets/616c6fe2-718b-4e20-85ff-0a967b0de683" />
